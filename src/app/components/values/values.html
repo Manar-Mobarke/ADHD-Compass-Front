@@ -1,0 +1,78 @@
+<section
+  class="py-16 sm:py-20 bg-white border-b border-gray-200"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+
+      <div
+        class="inline-flex items-center gap-2 px-3.5 py-1.5
+        rounded-full bg-softblue-light text-navy
+        font-bold text-xs mb-4 border border-turquoise/20"
+      >
+        <span class="material-symbols-outlined text-sm">
+          star
+        </span>
+
+        {{ content().badge }}
+      </div>
+
+      <h2
+        class="text-2xl sm:text-3xl lg:text-4xl
+        font-extrabold text-navy mb-4"
+      >
+        {{ content().title }}
+      </h2>
+
+      <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
+        {{ content().description }}
+      </p>
+
+    </div>
+
+    <!-- Values Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+
+      @for (pillar of content().pillars; track pillar.icon) {
+
+        <article
+          class="bg-offwhite rounded-2xl p-7 sm:p-8
+          border border-gray-200 text-center
+          flex flex-col items-center
+          hover:bg-white hover:shadow-xl
+          hover:border-turquoise
+          transition-all duration-300"
+        >
+
+          <!-- Icon -->
+          <div
+            class="w-16 h-16 rounded-2xl
+            bg-softblue-light text-turquoise
+            flex items-center justify-center mb-6"
+          >
+            <span class="material-symbols-outlined text-3xl">
+              {{ pillar.icon }}
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-lg sm:text-xl font-bold text-navy mb-3">
+            {{ pillar.title }}
+          </h3>
+
+          <!-- Description -->
+          <p class="text-base text-gray-700 leading-relaxed">
+            {{ pillar.description }}
+          </p>
+
+        </article>
+
+      }
+
+    </div>
+
+  </div>
+</section>

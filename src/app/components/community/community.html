@@ -1,0 +1,125 @@
+<section
+  id="community"
+  class="py-16 sm:py-20 bg-white border-b border-gray-200"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+      <!-- Community Content -->
+      <div class="lg:col-span-6 flex flex-col gap-6">
+
+        <!-- Heading -->
+        <div class="flex flex-col gap-3">
+
+          <div class="flex flex-wrap items-center gap-2.5 text-warmorange font-bold text-sm tracking-wide">
+
+            <span class="material-symbols-outlined text-lg">
+              forum
+            </span>
+
+            <span>{{ content().badge }}</span>
+
+            <span class="h-0.5 w-8 bg-warmorange/40 rounded-full"></span>
+
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy leading-tight">
+            {{ content().title }}
+          </h2>
+
+        </div>
+
+        <!-- Description -->
+        <p class="text-base sm:text-lg text-gray-700 leading-relaxed">
+          {{ content().description }}
+        </p>
+
+        <!-- Benefits -->
+        <div class="flex flex-col gap-4 pt-2">
+
+          @for (benefit of content().benefits; track $index) {
+
+            <div class="flex items-start gap-3">
+
+              <span class="material-symbols-outlined text-turquoise text-xl shrink-0">
+                check_circle
+              </span>
+
+              <span class="text-base text-gray-800 font-medium leading-relaxed">
+                {{ benefit }}
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+        <!-- Important Note -->
+        <div
+          class="p-4 rounded-xl bg-offwhite border border-gray-200
+          text-xs sm:text-sm text-gray-600 leading-relaxed
+          flex items-start gap-2.5 mt-2"
+        >
+
+          <span class="material-symbols-outlined text-turquoise text-lg shrink-0">
+            info
+          </span>
+
+          <p>
+            <strong>{{ content().noteTitle }}</strong>
+            {{ content().note }}
+          </p>
+
+        </div>
+
+        <!-- CTA -->
+        <div class="pt-2">
+
+          <a
+            href="#"
+            class="inline-flex items-center justify-center gap-2
+            px-8 py-3.5 rounded-xl
+            bg-warmorange text-white font-bold text-base
+            hover:bg-warmorange-hover shadow-md
+            transition-all duration-300
+            hover:-translate-y-0.5"
+          >
+
+            {{ content().button }}
+
+            <span class="material-symbols-outlined text-lg">
+              arrow_forward
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Community Image -->
+      <div class="lg:col-span-6">
+
+        <div
+          class="relative rounded-3xl overflow-hidden
+          shadow-xl border border-gray-200 bg-white p-3"
+        >
+
+          <img
+            src="YOUR_COMMUNITY_IMAGE_PATH"
+            [alt]="content().imageAlt"
+            class="w-full h-80 sm:h-96 object-cover rounded-2xl"
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

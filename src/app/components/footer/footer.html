@@ -1,0 +1,146 @@
+
+<footer
+  class="bg-[#172B4D] text-[#F9FAF8] pt-16 pb-8"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Main Footer -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5
+             gap-10 pb-12 border-b border-white/15"
+    >
+
+      <!-- Brand Information -->
+      <div class="lg:col-span-2 flex flex-col gap-4">
+
+        <a
+          href="#home"
+          class="flex items-center gap-3.5 w-fit"
+          aria-label="ADHD Compass Home"
+        >
+          <div class="w-10 h-10 flex items-center justify-center shrink-0">
+            <img
+              src="/ADHD-Logo-website.png"
+              alt="ADHD Compass Logo"
+              class="w-10 h-10 object-contain"
+            />
+          </div>
+
+          <span class="text-xl font-bold tracking-tight text-white">
+            ADHD Compass
+          </span>
+        </a>
+
+        <p
+          class="text-[15px] text-white/75 leading-relaxed
+                 max-w-sm font-normal"
+        >
+          {{ content().brandDescription }}
+        </p>
+
+        <p class="text-sm text-[#DCEEF4] font-medium mt-1">
+          {{ content().tagline }}
+        </p>
+
+      </div>
+
+      <!-- Quick Links -->
+      <div class="flex flex-col gap-4">
+
+        <h4 class="text-sm font-bold text-white mb-1">
+          {{ content().quickLinksTitle }}
+        </h4>
+
+        @for (link of content().quickLinks; track link.label) {
+          <a
+            [href]="link.url"
+            class="text-sm text-white/70 hover:text-[#F28C45]
+                   transition duration-200 w-fit"
+          >
+            {{ link.label }}
+          </a>
+        }
+
+      </div>
+
+      <!-- Account & Services -->
+      <div class="flex flex-col gap-4">
+
+        <h4 class="text-sm font-bold text-white mb-1">
+          {{ content().accountTitle }}
+        </h4>
+
+        @for (link of content().accountLinks; track link.label) {
+          <a
+            [href]="link.url"
+            class="text-sm text-white/70 hover:text-[#F28C45]
+                   transition duration-200 w-fit"
+          >
+            {{ link.label }}
+          </a>
+        }
+
+      </div>
+
+      <!-- Legal & Contact -->
+      <div class="flex flex-col gap-4">
+
+        <h4 class="text-sm font-bold text-white mb-1">
+          {{ content().legalTitle }}
+        </h4>
+
+        @for (link of content().legalLinks; track link.label) {
+          <a
+            [href]="link.url"
+            class="text-sm text-white/70 hover:text-[#F28C45]
+                   transition duration-200 w-fit"
+          >
+            {{ link.label }}
+          </a>
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div
+      class="py-6 border-b border-white/10
+             text-center md:text-start"
+    >
+      <p class="text-xs text-white/60 leading-relaxed font-normal">
+        <strong class="text-white/90">
+          {{ content().medicalTitle }}
+        </strong>
+
+        {{ content().medicalDisclaimer }}
+      </p>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div
+      class="pt-6 flex flex-col sm:flex-row
+             items-center justify-between gap-4"
+    >
+
+      <p class="text-xs text-white/60 font-normal text-center">
+        {{ content().copyright }}
+        © {{ currentYear }} ADHD Compass.
+
+        {{ content().platformDescription }}
+      </p>
+
+      <div class="flex items-center gap-2 text-xs text-white/50">
+        <span class="material-symbols-outlined text-base text-[#F28C45]">
+          favorite
+        </span>
+
+        <span>ADHD Compass</span>
+      </div>
+
+    </div>
+
+  </div>
+</footer>

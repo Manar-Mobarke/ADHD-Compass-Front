@@ -1,0 +1,183 @@
+<section
+  id="audience"
+  class="py-16 sm:py-20 bg-white border-b border-gray-200"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+
+      <div
+        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full
+        bg-softblue-light text-navy font-bold text-xs mb-4
+        border border-softblue/30"
+      >
+        <span class="material-symbols-outlined text-sm">
+          diversity_3
+        </span>
+
+        {{ content().badge }}
+      </div>
+
+      <h2
+        class="text-2xl sm:text-3xl lg:text-4xl
+        font-extrabold text-navy mb-4 leading-relaxed"
+      >
+        {{ content().title }}
+      </h2>
+
+      <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
+        {{ content().description }}
+      </p>
+
+    </div>
+
+    <!-- Audience Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+
+      <!-- Families Card -->
+      <article
+        class="bg-offwhite rounded-3xl border border-gray-200
+        overflow-hidden flex flex-col justify-between
+        hover:shadow-xl hover:border-turquoise/40
+        transition-all duration-300 group"
+      >
+
+        <div class="p-6 sm:p-8 flex flex-col gap-4">
+
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1.5
+            rounded-full bg-softblue-light text-turquoise
+            font-bold text-xs w-fit border border-turquoise/20"
+          >
+            <span class="material-symbols-outlined text-sm">
+              family_restroom
+            </span>
+
+            {{ content().familyLabel }}
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-navy leading-relaxed">
+            {{ content().familyTitle }}
+          </h3>
+
+          <p class="text-base text-gray-700 leading-relaxed">
+            {{ content().familyDescription }}
+          </p>
+
+        </div>
+
+        <!-- Family Image -->
+        <div class="px-6 sm:px-8 pb-4">
+
+          <div class="rounded-2xl overflow-hidden shadow-sm
+          h-56 sm:h-64 border border-gray-200">
+
+            <img
+              src="YOUR_FAMILY_IMAGE_PATH"
+              [alt]="content().familyImageAlt"
+              class="w-full h-full object-cover
+              group-hover:scale-105 transition-transform duration-300"
+            />
+
+          </div>
+
+        </div>
+
+        <!-- Family CTA -->
+        <div class="p-6 sm:p-8 pt-4">
+
+          <a
+            href="#specialists"
+            class="inline-flex items-center justify-center gap-2
+            w-full py-3.5 px-6 rounded-xl
+            bg-turquoise text-white font-bold text-base
+            hover:bg-turquoise/90 transition shadow-sm"
+          >
+            {{ content().familyButton }}
+
+            <span class="material-symbols-outlined text-lg">
+              arrow_forward
+            </span>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- Adults Card -->
+      <article
+        class="bg-offwhite rounded-3xl border border-gray-200
+        overflow-hidden flex flex-col justify-between
+        hover:shadow-xl hover:border-warmorange/40
+        transition-all duration-300 group"
+      >
+
+        <div class="p-6 sm:p-8 flex flex-col gap-4">
+
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1.5
+            rounded-full bg-warmorange/10 text-warmorange
+            font-bold text-xs w-fit border border-warmorange/20"
+          >
+            <span class="material-symbols-outlined text-sm">
+              person
+            </span>
+
+            {{ content().adultLabel }}
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-navy leading-relaxed">
+            {{ content().adultTitle }}
+          </h3>
+
+          <p class="text-base text-gray-700 leading-relaxed">
+            {{ content().adultDescription }}
+          </p>
+
+        </div>
+
+        <!-- Adults Image -->
+        <div class="px-6 sm:px-8 pb-4">
+
+          <div class="rounded-2xl overflow-hidden shadow-sm
+          h-56 sm:h-64 border border-gray-200">
+
+            <img
+              src="YOUR_ADULT_IMAGE_PATH"
+              [alt]="content().adultImageAlt"
+              class="w-full h-full object-cover
+              group-hover:scale-105 transition-transform duration-300"
+            />
+
+          </div>
+
+        </div>
+
+        <!-- Adults CTA -->
+        <div class="p-6 sm:p-8 pt-4">
+
+          <a
+            href="#screening"
+            class="inline-flex items-center justify-center gap-2
+            w-full py-3.5 px-6 rounded-xl
+            bg-warmorange text-white font-bold text-base
+            hover:bg-warmorange-hover transition shadow-sm"
+          >
+            {{ content().adultButton }}
+
+            <span class="material-symbols-outlined text-lg">
+              arrow_forward
+            </span>
+          </a>
+
+        </div>
+
+      </article>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,96 @@
+
+/* Navigation Links */
+.nav-link {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  color: #0b1b3a;
+  transition: color 200ms;
+}
+
+.nav-link:hover {
+  color: #f97316;
+}
+
+@media (min-width: 1280px) {
+  .nav-link {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+/* Mobile Navigation */
+.mobile-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  color: #0b1b3a;
+  transition: all 200ms;
+}
+
+.mobile-link:hover {
+  background-color: #f9fafb;
+  color: #f97316;
+}
+
+/* Register Button */
+.register-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background-color: #f97316;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition: all 300ms ease-out;
+}
+
+.register-btn:hover {
+  background-color: #ea580c;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: translateY(-0.25rem);
+}
+
+.register-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.register-btn:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Mobile Menu Animation */
+.animate-menu {
+  animation: menuSlideDown 250ms ease-out;
+}
+
+@keyframes menuSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-menu {
+    animation: none;
+  }
+
+  .register-btn {
+    transition: none;
+  }
+}

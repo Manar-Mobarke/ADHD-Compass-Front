@@ -1,0 +1,78 @@
+<section
+  class="py-16 sm:py-20 bg-offwhite border-b border-gray-200"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+
+      <div
+        class="inline-flex items-center gap-2 px-3.5 py-1.5
+        rounded-full bg-softblue-light text-turquoise
+        font-bold text-xs mb-4 border border-turquoise/20"
+      >
+        <span class="material-symbols-outlined text-sm">
+          alt_route
+        </span>
+
+        {{ content().badge }}
+      </div>
+
+      <h2
+        class="text-2xl sm:text-3xl lg:text-4xl
+        font-extrabold text-navy mb-4 leading-relaxed"
+      >
+        {{ content().title }}
+      </h2>
+
+      <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
+        {{ content().description }}
+      </p>
+
+    </div>
+
+    <!-- Steps Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      @for (step of content().steps; track step.number) {
+
+        <article
+          class="p-6 rounded-2xl bg-white
+          border border-gray-200 shadow-sm
+          flex flex-col relative
+          hover:border-turquoise hover:shadow-md
+          transition-all duration-300"
+        >
+
+          <!-- Step Number -->
+          <div
+            class="w-10 h-10 rounded-xl
+            text-white font-bold
+            flex items-center justify-center
+            mb-4 text-base shadow-sm"
+            [class.bg-navy]="step.color === 'navy'"
+            [class.bg-turquoise]="step.color === 'teal'"
+            [class.bg-warmorange]="step.color === 'orange'"
+          >
+            {{ step.number }}
+          </div>
+
+          <!-- Step Content -->
+          <h3 class="text-lg font-bold text-navy mb-2">
+            {{ step.title }}
+          </h3>
+
+          <p class="text-sm sm:text-[15px] text-gray-700 leading-relaxed">
+            {{ step.description }}
+          </p>
+
+        </article>
+
+      }
+
+    </div>
+
+  </div>
+</section>

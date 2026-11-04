@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+
+@theme {
+  --color-navy: #172B4D;
+  --color-turquoise: #008F9B;
+
+  --color-warmorange: #F28C45;
+  --color-warmorange-hover: #DD7430;
+
+  --color-softblue-light: #DCEEF4;
+  --color-offwhite: #F9FAF8;
+
+
+}
+

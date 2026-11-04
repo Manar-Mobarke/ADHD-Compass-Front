@@ -1,0 +1,119 @@
+<section
+  id="for-specialists"
+  class="py-20 bg-white border-b border-gray-200"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div
+      class="rounded-3xl bg-navy text-white p-8 sm:p-12
+             relative overflow-hidden shadow-2xl"
+    >
+
+      <!-- Subtle Glow Accent -->
+      <div
+        class="absolute top-0 end-0 w-96 h-96
+               bg-turquoise/20 rounded-full blur-3xl
+               pointer-events-none"
+      ></div>
+
+      <div
+        class="relative z-10 grid grid-cols-1 lg:grid-cols-12
+               gap-8 lg:gap-12 items-center"
+      >
+
+        <!-- Text & Benefits -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+
+          <!-- Badge -->
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1
+                   rounded-full bg-white/10 text-softblue-light
+                   text-xs font-bold w-fit"
+          >
+            <span class="material-symbols-outlined text-sm">
+              badge
+            </span>
+
+            {{ content().badge }}
+          </div>
+
+          <!-- Heading -->
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight">
+            {{ content().title }}
+          </h2>
+
+          <!-- Description -->
+          <p class="text-[17px] text-gray-200 leading-relaxed font-normal">
+            {{ content().description }}
+          </p>
+
+          <!-- Benefits -->
+          <div class="flex flex-col gap-3 pt-1">
+
+            @for (benefit of content().benefits; track benefit) {
+
+              <div class="flex items-center gap-3">
+
+                <span
+                  class="material-symbols-outlined text-warmorange
+                         text-xl shrink-0"
+                >
+                  check_circle
+                </span>
+
+                <span class="text-[15px] font-medium text-gray-100">
+                  {{ benefit }}
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+          <!-- CTA -->
+          <div class="pt-2">
+
+            <a
+              [href]="registrationUrl"
+              class="inline-flex items-center justify-center
+                     px-8 py-3.5 rounded-xl bg-warmorange
+                     text-white font-bold text-base
+                     hover:bg-warmorange-hover shadow-lg
+                     transition transform hover:-translate-y-0.5"
+            >
+              {{ content().button }}
+            </a>
+
+          </div>
+
+        </div>
+
+        <!-- Specialist Image -->
+        <div class="lg:col-span-5 h-full flex items-center justify-center">
+
+          <div
+            class="w-full h-80 sm:h-96 lg:h-full min-h-[350px]
+                   rounded-2xl overflow-hidden shadow-lg
+                   border border-white/10"
+          >
+
+            <img
+              src="https://lh3.googleusercontent.com/aida/AEtjO1VBlOtaOnR_eS-Katskjpl8G7Defsa6St11R35V09v1XXV4Yy9IVOkcVYUsH142xocCtKYPGNzYJ2rTLX5mGE_pXYCUqP-4JKgbtWoVmAFYkF9EuETV0w_D75s1vWGGv8faWXqlb0jTMZ5nRjrlYHvDR7TfqtS_yBKhl2ETwnk6EvGpcJU8iaUnfHERkxUk2DXtMCB3J262tynnppBrQjee8Y9LlnlFsfPBrs0eXjSA"
+              [alt]="content().imageAlt"
+              loading="lazy"
+              class="w-full h-full object-cover object-top"
+            />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

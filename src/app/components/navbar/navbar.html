@@ -1,0 +1,108 @@
+<header
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+  class="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-md"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex min-h-20 items-center justify-between gap-3">
+      <a
+        href="#home"
+        (click)="closeMenu()"
+        class="group flex shrink-0 items-center gap-3"
+      >
+        <img
+          src="ADHD-Logo-website.png"
+          alt=""
+          class="h-12 w-12 object-contain transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16"
+        />
+        <span class="text-lg font-bold tracking-tight text-navy sm:text-xl">
+          {{ t().brand }}
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-6 xl:flex xl:gap-8" [attr.aria-label]="t().mainNavigation">
+        <a href="#home" class="nav-link">{{ t().home }}</a>
+        <a href="#specialists" class="nav-link">{{ t().specialists }}</a>
+        <a href="#articles" class="nav-link">{{ t().articles }}</a>
+        <a href="#community" class="nav-link">{{ t().community }}</a>
+        <a href="#services" class="nav-link">{{ t().about }}</a>
+      </nav>
+
+      <div class="hidden items-center gap-3 xl:flex">
+        <button
+          type="button"
+          (click)="toggleLanguage()"
+          class="rounded-lg px-3 py-2 text-sm font-bold text-navy transition-colors duration-200 hover:bg-gray-100"
+          [attr.aria-label]="t().changeLanguage"
+        >
+          {{ currentLang() === 'ar' ? 'EN' : 'عربي' }}
+        </button>
+        <a
+          href="#login"
+          class="rounded-xl border-2 border-turquoise px-4 py-2 text-sm font-bold text-navy transition-all duration-200 hover:bg-gray-50 hover:text-warmorange"
+        >
+          {{ t().login }}
+        </a>
+        <a href="#register" class="register-btn">{{ t().register }}</a>
+      </div>
+
+      <div class="flex items-center gap-2 xl:hidden">
+        <button
+          type="button"
+          (click)="toggleLanguage()"
+          class="rounded-lg border border-gray-200 px-3 py-2 text-sm font-bold text-navy transition-all duration-200 hover:border-turquoise hover:text-turquoise"
+          [attr.aria-label]="t().changeLanguage"
+        >
+          {{ currentLang() === 'ar' ? 'EN' : 'عربي' }}
+        </button>
+        <button
+          type="button"
+          (click)="toggleMenu()"
+          class="flex h-11 w-11 items-center justify-center rounded-xl text-navy transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-turquoise"
+          [attr.aria-expanded]="isMenuOpen()"
+          aria-controls="mobile-menu"
+          [attr.aria-label]="isMenuOpen() ? t().closeMenu : t().openMenu"
+        >
+          @if (isMenuOpen()) {
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          } @else {
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
+
+    @if (isMenuOpen()) {
+      <div id="mobile-menu" class="border-t border-gray-100 py-5 animate-menu xl:hidden">
+        <nav class="flex flex-col gap-1" [attr.aria-label]="t().mobileNavigation">
+          <a href="#home" (click)="closeMenu()" class="mobile-link">{{ t().home }}</a>
+          <a href="#specialists" (click)="closeMenu()" class="mobile-link">{{ t().specialists }}</a>
+          <a href="#articles" (click)="closeMenu()" class="mobile-link">{{ t().articles }}</a>
+          <a href="#community" (click)="closeMenu()" class="mobile-link">{{ t().community }}</a>
+          <a href="#services" (click)="closeMenu()" class="mobile-link">{{ t().about }}</a>
+        </nav>
+
+        <div class="mt-5 flex flex-col gap-3 border-t border-gray-100 pt-5">
+          <a
+            href="#login"
+            (click)="closeMenu()"
+            class="w-full rounded-xl border-2 border-turquoise px-4 py-3 text-center text-sm font-bold text-navy transition-all duration-200 hover:bg-gray-50"
+          >
+            {{ t().login }}
+          </a>
+          <a
+            href="#register"
+            (click)="closeMenu()"
+            class="register-btn w-full"
+          >
+            {{ t().register }}
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</header>

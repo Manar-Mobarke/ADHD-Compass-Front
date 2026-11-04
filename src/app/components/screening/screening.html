@@ -1,0 +1,143 @@
+<section
+  id="screening"
+  class="py-16 sm:py-20 bg-white border-b border-gray-200"
+  [attr.dir]="direction()"
+  [attr.lang]="currentLang()"
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div
+      class="rounded-3xl p-6 sm:p-10 lg:p-12
+      bg-offwhite border border-softblue-light
+      shadow-md relative overflow-hidden"
+    >
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+        <!-- Text & Call to Action -->
+        <div class="lg:col-span-8 flex flex-col gap-4">
+
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 text-turquoise font-bold text-sm">
+
+            <span class="material-symbols-outlined text-base">
+              psychology_alt
+            </span>
+
+            <span>{{ content().badge }}</span>
+
+          </div>
+
+          <!-- Heading -->
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-navy leading-tight">
+            {{ content().title }}
+          </h2>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-gray-700 leading-relaxed">
+            {{ content().description }}
+          </p>
+
+          <!-- Disclaimer -->
+          <div
+            class="p-4 rounded-xl bg-warmorange/10
+            border-s-4 border-warmorange
+            flex items-start gap-3 my-1"
+          >
+
+            <span class="material-symbols-outlined text-warmorange text-2xl shrink-0 mt-0.5">
+              info
+            </span>
+
+            <div class="text-sm text-gray-800 leading-relaxed">
+
+              <strong class="font-bold text-navy block mb-1">
+                {{ content().disclaimerTitle }}
+              </strong>
+
+              {{ content().disclaimer }}
+
+            </div>
+
+          </div>
+
+          <!-- Optional Note -->
+          <p class="text-xs text-gray-600 font-medium">
+            {{ content().optional }}
+          </p>
+
+          <!-- CTA -->
+          <div class="pt-2">
+
+            <button
+              type="button"
+              class="inline-flex items-center justify-center gap-2
+              rounded-xl px-8 py-3.5 text-base font-bold
+              text-white bg-warmorange
+              hover:bg-warmorange-hover
+              transition-all duration-300 shadow-sm
+              hover:shadow-md hover:-translate-y-0.5"
+            >
+
+              {{ content().button }}
+
+              <span class="material-symbols-outlined text-lg">
+                arrow_forward
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- Questionnaire Illustration Card -->
+        <div class="lg:col-span-4 flex justify-center">
+
+          <div
+            class="w-full max-w-xs p-6 bg-white
+            rounded-2xl border border-gray-200
+            shadow-sm text-center
+            flex flex-col items-center"
+          >
+
+            <!-- Icon -->
+            <div
+              class="w-16 h-16 rounded-2xl
+              bg-softblue-light flex items-center
+              justify-center text-turquoise mb-4"
+            >
+
+              <span class="material-symbols-outlined text-3xl">
+                checklist
+              </span>
+
+            </div>
+
+            <h3 class="text-base font-bold text-navy mb-2">
+              {{ content().cardTitle }}
+            </h3>
+
+            <p class="text-xs text-gray-600 leading-relaxed mb-4">
+              {{ content().cardDescription }}
+            </p>
+
+            <!-- Duration -->
+            <span
+              class="text-xs font-bold text-turquoise
+              px-3 py-1.5 bg-softblue-light
+              border border-turquoise/20 rounded-full"
+            >
+              {{ content().duration }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
