@@ -1,10 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Language, LanguageCode } from '../../services/language';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -15,10 +16,13 @@ export class Navbar {
 
   isMenuOpen = signal(false);
 
+  /**
+   * التعليقات النصية الخاصة بالشريط العلوي ثابتة باللغة العربية.
+   * تم إلغاء خيار تبديل اللغة لأن التطبيق يعمل حاليًا فقط على العربية.
+   */
   private readonly translations = {
     ar: {
       brand: 'بوصلة ADHD',
-      changeLanguage: 'تغيير اللغة',
       mainNavigation: 'التنقل الرئيسي',
       mobileNavigation: 'التنقل على الهاتف',
       home: 'الرئيسية',
@@ -33,7 +37,6 @@ export class Navbar {
     },
     en: {
       brand: 'ADHD Compass',
-      changeLanguage: 'Change language',
       mainNavigation: 'Main navigation',
       mobileNavigation: 'Mobile navigation',
       home: 'Home',
@@ -48,7 +51,6 @@ export class Navbar {
     },
   } satisfies Record<LanguageCode, {
     brand: string;
-    changeLanguage: string;
     mainNavigation: string;
     mobileNavigation: string;
     home: string;
@@ -63,11 +65,6 @@ export class Navbar {
   }>;
 
   t = computed(() => this.translations[this.currentLang()]);
-
-  toggleLanguage(): void {
-    this.language.toggleLanguage();
-    this.closeMenu();
-  }
 
   toggleMenu(): void {
     this.isMenuOpen.update(open => !open);

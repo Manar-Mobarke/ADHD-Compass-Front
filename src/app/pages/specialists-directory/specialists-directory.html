@@ -1,0 +1,231 @@
+
+<div dir="rtl" lang="ar" class="min-h-screen bg-offwhite">
+
+  <!-- Page Hero -->
+  <section class="hero-section">
+    <div class="mx-auto max-w-7xl px-6 py-14 md:py-16">
+      <div class="max-w-3xl">
+        <span class="inline-block rounded-full bg-softblue-light px-4 py-2 text-sm font-bold text-turquoise">
+          الخطوة الأولى للدعم
+        </span>
+
+        <h1 class="mt-6 text-3xl font-extrabold text-navy md:text-5xl">
+          الأخصائيون النفسيون
+        </h1>
+
+        <p class="mt-5 max-w-2xl text-base leading-8 text-slate-600">
+          اختار الأخصائي المناسب ليك أو لأسرتك بناءً على تخصصه وخبرته،
+          واطّلع على مدة الجلسة وسعرها قبل الحجز.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-5 text-sm font-semibold text-navy">
+          <span>✓ ملفات تعريفية للأخصائيين</span>
+          <span>✓ تفاصيل الجلسات والأسعار</span>
+          <span>✓ اختيار موعد مناسب</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="mx-auto max-w-7xl px-6 py-14">
+
+    <!-- Search & Filters -->
+    <div class="mb-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-12">
+
+        <div class="md:col-span-6">
+          <input
+            type="search"
+            placeholder="ابحث بالاسم أو مجال التخصص..."
+            [value]="searchTerm()"
+            (input)="searchTerm.set($any($event.target).value)"
+            class="filter-input"
+          />
+        </div>
+
+        <div class="md:col-span-2">
+          <select
+            [value]="selectedCategory()"
+            (change)="selectedCategory.set($any($event.target).value)"
+            class="filter-input"
+          >
+            @for (category of categories; track category.value) {
+              <option [value]="category.value">
+                {{ category.label }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <select
+            [value]="selectedPrice()"
+            (change)="selectedPrice.set($any($event.target).value)"
+            class="filter-input"
+          >
+            <option value="all">كل الأسعار</option>
+            <option value="300">حتى 300 جنيه</option>
+            <option value="350">حتى 350 جنيه</option>
+            <option value="400">حتى 400 جنيه</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <button
+            type="button"
+            (click)="clearFilters()"
+            class="w-full rounded-xl border border-turquoise px-4 py-3 font-bold text-turquoise transition hover:bg-softblue-light"
+          >
+            مسح الفلاتر
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section Heading -->
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-extrabold text-navy">
+          اعرف مين الأنسب ليك
+        </h2>
+        <p class="mt-2 text-sm text-slate-500">
+          تصفح التخصصات واختار الأنسب لاحتياجاتك.
+        </p>
+      </div>
+
+      <span class="rounded-full bg-warmorange/10 px-4 py-2 text-sm font-bold text-warmorange">
+        {{ filteredSpecialists().length }} أخصائي
+      </span>
+    </div>
+
+    <!-- Specialist Cards -->
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+
+      @for (specialist of filteredSpecialists(); track specialist.id) {
+
+        <article class="specialist-card">
+
+          <!-- Profile -->
+          <div class="flex items-center gap-4">
+            <div class="avatar">
+              {{ specialist.initials }}
+            </div>
+
+            <div class="min-w-0">
+              <h3 class="text-lg font-extrabold text-navy">
+                {{ specialist.name }}
+              </h3>
+
+              <p class="mt-1 text-sm text-slate-500">
+                {{ specialist.title }}
+              </p>
+
+              <span class="mt-2 inline-block rounded-full bg-softblue-light px-3 py-1 text-xs font-bold text-turquoise">
+                ملف تعريفي تجريبي
+              </span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="my-5 min-h-16 text-sm leading-7 text-slate-500">
+            {{ specialist.description }}
+          </p>
+
+          <!-- Details -->
+          <div class="space-y-3 border-t border-slate-100 pt-4 text-sm text-slate-600">
+
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined">schedule</span>
+                الخبرة
+              </span>
+              <span class="font-semibold">{{ specialist.experience }} سنوات</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined">groups</span>
+                الفئة
+              </span>
+              <span class="font-semibold">
+                {{ specialist.category === 'adults' ? 'البالغين' :
+                   specialist.category === 'children' ? 'الأطفال والأهالي' :
+                   'الإرشاد الأسري' }}
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined">verified_user</span>
+                المجال
+              </span>
+              <span class="font-semibold">{{ specialist.specialty }}</span>
+            </div>
+
+          </div>
+
+          <!-- Price -->
+          <div class="price-box mt-5">
+            <span>جلسة {{ specialist.duration }} دقيقة</span>
+            <span>{{ specialist.price }} جنيه</span>
+          </div>
+
+          <!-- Actions -->
+          <div class="mt-5 grid grid-cols-2 gap-3">
+            <a
+              href="#"
+              class="primary-button"
+              aria-label="احجز جلسة"
+            >
+              احجز جلسة
+            </a>
+
+            <a
+              href="#"
+              class="secondary-button"
+              aria-label="عرض الملف"
+            >
+              عرض الملف
+            </a>
+          </div>
+
+        </article>
+
+      } @empty {
+
+        <div class="col-span-full rounded-2xl bg-white p-12 text-center">
+          <span class="material-symbols-outlined text-5xl text-turquoise">
+            search_off
+          </span>
+
+          <h3 class="mt-4 text-xl font-bold text-navy">
+            مفيش نتائج مطابقة
+          </h3>
+
+          <p class="mt-2 text-slate-500">
+            جرب تغير كلمات البحث أو الفلاتر.
+          </p>
+
+          <button
+            type="button"
+            (click)="clearFilters()"
+            class="mt-5 rounded-xl bg-turquoise px-6 py-3 font-bold text-white"
+          >
+            عرض كل الأخصائيين
+          </button>
+        </div>
+
+      }
+
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mt-8 rounded-xl border-r-4 border-warmorange bg-softblue-light/60 p-5 text-sm leading-7 text-navy">
+      قبل اختيار أي ملف، يُرجى التأكد من المؤهلات والترخيص ونطاق الممارسة المهنية
+      للأخصائي، والاطلاع على معلومات الجلسة قبل الحجز.
+    </div>
+
+  </section>
+</div>

@@ -15,6 +15,9 @@ export class Hero {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * النصوص الرئيسية للصفحة الأولية ثابتة بالعربية لأن التطبيق يعمل حاليًا فقط بالنسخة العربية.
+   */
   content = computed(() => {
 
     const translations = {

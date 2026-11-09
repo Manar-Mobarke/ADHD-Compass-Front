@@ -14,6 +14,9 @@ export class Community {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * نصوص قسم المجتمع مخصصة للنسخة العربية الحالية فقط.
+   */
   content = computed(() => {
     const translations = {
       ar: {

@@ -14,6 +14,9 @@ export class Articles{
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * نصوص المحتوى العلمي موجهة للعربية فقط لأن هذا الإصدار يعمل على لغة واحدة.
+   */
   content = computed(() => {
     const translations = {
       ar: {

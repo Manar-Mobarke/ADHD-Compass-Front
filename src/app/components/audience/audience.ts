@@ -14,6 +14,9 @@ export class Audience {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * محتوى قسم الجمهور المستهدف مكتوب بالعربية لتوحيد تجربة المستخدم في النسخة الحالية.
+   */
   content = computed(() => {
     const translations = {
       ar: {

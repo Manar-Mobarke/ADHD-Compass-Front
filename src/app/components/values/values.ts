@@ -16,6 +16,9 @@ export class Values {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * نصوص القيم والرسالة الأساسية مذكورة بالعربية لتوحيد هوية المنصة.
+   */
   content = computed(() => {
     const translations = {
       ar: {

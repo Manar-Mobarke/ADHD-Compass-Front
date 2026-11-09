@@ -16,6 +16,9 @@ export class Services {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * نصوص الخدمات ثابتة بالعربية لأن التطبيق لا يدعم حاليًا إلا اللغة العربية.
+   */
   content = computed(() => {
     const translations = {
       ar: {

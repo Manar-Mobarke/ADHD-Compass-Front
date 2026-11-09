@@ -14,6 +14,9 @@ export class Screening {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * نصوص الفحص المبدئي تظل بالعربية لتناسب النسخة الحالية من المنصة.
+   */
   content = computed(() => {
     const translations = {
       ar: {

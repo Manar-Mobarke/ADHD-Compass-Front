@@ -17,6 +17,9 @@ export class Footer{
 
   currentYear = new Date().getFullYear();
 
+  /**
+   * النصوص الوظيفية في تذييل الصفحة مكتوبة بالعربية فقط لدعم النسخة الحالية.
+   */
   content = computed(() => {
     const translations = {
       ar: {

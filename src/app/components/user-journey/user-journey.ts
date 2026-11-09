@@ -14,6 +14,9 @@ export class UserJourney {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * نصوص رحلة المستخدم ثابتة بالعربية لتوفير تجربة موحدة في التطبيق الحالي.
+   */
   content = computed(() => {
     const translations = {
       ar: {

@@ -15,6 +15,9 @@ export class Specialists {
   currentLang = this.languageService.currentLang;
   direction = this.languageService.direction;
 
+  /**
+   * محتوى قسم المتخصصين ثابت بالعربية فقط في النسخة الحالية.
+   */
   content = computed(() => {
     const translations = {
       ar: {
