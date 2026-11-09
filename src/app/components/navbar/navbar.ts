@@ -23,7 +23,7 @@ export class Navbar {
   private readonly translations = {
     ar: {
       brand: 'ADHD Compass',
-      tagline: 'بوصلتك لفهم الـ ADHD',
+      tagline: 'البوصلة',
       mainNavigation: 'التنقل الرئيسي',
       mobileNavigation: 'التنقل على الهاتف',
       home: 'الرئيسية',
