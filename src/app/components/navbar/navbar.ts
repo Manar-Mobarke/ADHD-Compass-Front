@@ -22,7 +22,8 @@ export class Navbar {
    */
   private readonly translations = {
     ar: {
-      brand: 'بوصلة ADHD',
+      brand: 'ADHD Compass',
+      tagline: 'بوصلتك لفهم الـ ADHD',
       mainNavigation: 'التنقل الرئيسي',
       mobileNavigation: 'التنقل على الهاتف',
       home: 'الرئيسية',
@@ -37,6 +38,7 @@ export class Navbar {
     },
     en: {
       brand: 'ADHD Compass',
+      tagline: 'Your compass to understanding ADHD',
       mainNavigation: 'Main navigation',
       mobileNavigation: 'Mobile navigation',
       home: 'Home',
@@ -51,6 +53,7 @@ export class Navbar {
     },
   } satisfies Record<LanguageCode, {
     brand: string;
+    tagline: string;
     mainNavigation: string;
     mobileNavigation: string;
     home: string;

@@ -1,5 +1,6 @@
 
 import { Component, computed, signal } from '@angular/core';
+import { Footer } from '../../components/footer/footer';
 
 interface Specialist {
   id: number;
@@ -17,7 +18,7 @@ interface Specialist {
 @Component({
   selector: 'app-specialists-directory',
   standalone: true,
-  imports: [],
+  imports: [Footer],
   templateUrl: './specialists-directory.html',
   styleUrl: './specialists-directory.css'
 })

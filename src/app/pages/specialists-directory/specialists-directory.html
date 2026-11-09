@@ -1,4 +1,3 @@
-
 <div dir="rtl" lang="ar" class="min-h-screen bg-offwhite">
 
   <!-- Page Hero -->
@@ -23,6 +22,7 @@
           <span>✓ تفاصيل الجلسات والأسعار</span>
           <span>✓ اختيار موعد مناسب</span>
         </div>
+
       </div>
     </div>
   </section>
@@ -35,35 +35,24 @@
       <div class="grid grid-cols-1 gap-3 md:grid-cols-12">
 
         <div class="md:col-span-6">
-          <input
-            type="search"
-            placeholder="ابحث بالاسم أو مجال التخصص..."
-            [value]="searchTerm()"
-            (input)="searchTerm.set($any($event.target).value)"
-            class="filter-input"
-          />
+          <input type="search" placeholder="ابحث بالاسم أو مجال التخصص..." [value]="searchTerm()"
+            (input)="searchTerm.set($any($event.target).value)" class="filter-input" />
         </div>
 
         <div class="md:col-span-2">
-          <select
-            [value]="selectedCategory()"
-            (change)="selectedCategory.set($any($event.target).value)"
-            class="filter-input"
-          >
+          <select [value]="selectedCategory()" (change)="selectedCategory.set($any($event.target).value)"
+            class="filter-input">
             @for (category of categories; track category.value) {
-              <option [value]="category.value">
-                {{ category.label }}
-              </option>
+            <option [value]="category.value">
+              {{ category.label }}
+            </option>
             }
           </select>
         </div>
 
         <div class="md:col-span-2">
-          <select
-            [value]="selectedPrice()"
-            (change)="selectedPrice.set($any($event.target).value)"
-            class="filter-input"
-          >
+          <select [value]="selectedPrice()" (change)="selectedPrice.set($any($event.target).value)"
+            class="filter-input">
             <option value="all">كل الأسعار</option>
             <option value="300">حتى 300 جنيه</option>
             <option value="350">حتى 350 جنيه</option>
@@ -72,11 +61,8 @@
         </div>
 
         <div class="md:col-span-2">
-          <button
-            type="button"
-            (click)="clearFilters()"
-            class="w-full rounded-xl border border-turquoise px-4 py-3 font-bold text-turquoise transition hover:bg-softblue-light"
-          >
+          <button type="button" (click)="clearFilters()"
+            class="w-full rounded-xl border border-turquoise px-4 py-3 font-bold text-turquoise transition hover:bg-softblue-light">
             مسح الفلاتر
           </button>
         </div>
@@ -105,117 +91,106 @@
 
       @for (specialist of filteredSpecialists(); track specialist.id) {
 
-        <article class="specialist-card">
+      <article class="specialist-card">
 
-          <!-- Profile -->
-          <div class="flex items-center gap-4">
-            <div class="avatar">
-              {{ specialist.initials }}
-            </div>
-
-            <div class="min-w-0">
-              <h3 class="text-lg font-extrabold text-navy">
-                {{ specialist.name }}
-              </h3>
-
-              <p class="mt-1 text-sm text-slate-500">
-                {{ specialist.title }}
-              </p>
-
-              <span class="mt-2 inline-block rounded-full bg-softblue-light px-3 py-1 text-xs font-bold text-turquoise">
-                ملف تعريفي تجريبي
-              </span>
-            </div>
+        <!-- Profile -->
+        <div class="flex items-center gap-4">
+          <div class="avatar">
+            {{ specialist.initials }}
           </div>
 
-          <!-- Description -->
-          <p class="my-5 min-h-16 text-sm leading-7 text-slate-500">
-            {{ specialist.description }}
-          </p>
+          <div class="min-w-0">
+            <h3 class="text-lg font-extrabold text-navy">
+              {{ specialist.name }}
+            </h3>
 
-          <!-- Details -->
-          <div class="space-y-3 border-t border-slate-100 pt-4 text-sm text-slate-600">
+            <p class="mt-1 text-sm text-slate-500">
+              {{ specialist.title }}
+            </p>
 
-            <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <span class="material-symbols-outlined">schedule</span>
-                الخبرة
-              </span>
-              <span class="font-semibold">{{ specialist.experience }} سنوات</span>
-            </div>
+            <span class="mt-2 inline-block rounded-full bg-softblue-light px-3 py-1 text-xs font-bold text-turquoise">
+              ملف تعريفي تجريبي
+            </span>
+          </div>
+        </div>
 
-            <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <span class="material-symbols-outlined">groups</span>
-                الفئة
-              </span>
-              <span class="font-semibold">
-                {{ specialist.category === 'adults' ? 'البالغين' :
-                   specialist.category === 'children' ? 'الأطفال والأهالي' :
-                   'الإرشاد الأسري' }}
-              </span>
-            </div>
+        <!-- Description -->
+        <p class="my-5 min-h-16 text-sm leading-7 text-slate-500">
+          {{ specialist.description }}
+        </p>
 
-            <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <span class="material-symbols-outlined">verified_user</span>
-                المجال
-              </span>
-              <span class="font-semibold">{{ specialist.specialty }}</span>
-            </div>
+        <!-- Details -->
+        <div class="space-y-3 border-t border-slate-100 pt-4 text-sm text-slate-600">
 
+          <div class="flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <span class="material-symbols-outlined">schedule</span>
+              الخبرة
+            </span>
+            <span class="font-semibold">{{ specialist.experience }} سنوات</span>
           </div>
 
-          <!-- Price -->
-          <div class="price-box mt-5">
-            <span>جلسة {{ specialist.duration }} دقيقة</span>
-            <span>{{ specialist.price }} جنيه</span>
+          <div class="flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <span class="material-symbols-outlined">groups</span>
+              الفئة
+            </span>
+            <span class="font-semibold">
+              {{ specialist.category === 'adults' ? 'البالغين' :
+              specialist.category === 'children' ? 'الأطفال والأهالي' :
+              'الإرشاد الأسري' }}
+            </span>
           </div>
 
-          <!-- Actions -->
-          <div class="mt-5 grid grid-cols-2 gap-3">
-            <a
-              href="#"
-              class="primary-button"
-              aria-label="احجز جلسة"
-            >
-              احجز جلسة
-            </a>
-
-            <a
-              href="#"
-              class="secondary-button"
-              aria-label="عرض الملف"
-            >
-              عرض الملف
-            </a>
+          <div class="flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <span class="material-symbols-outlined">verified_user</span>
+              المجال
+            </span>
+            <span class="font-semibold">{{ specialist.specialty }}</span>
           </div>
 
-        </article>
+        </div>
+
+        <!-- Price -->
+        <div class="price-box mt-5">
+          <span>جلسة {{ specialist.duration }} دقيقة</span>
+          <span>{{ specialist.price }} جنيه</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <a href="#" class="primary-button" aria-label="احجز جلسة">
+            احجز جلسة
+          </a>
+
+          <a href="#" class="secondary-button" aria-label="عرض الملف">
+            عرض الملف
+          </a>
+        </div>
+
+      </article>
 
       } @empty {
 
-        <div class="col-span-full rounded-2xl bg-white p-12 text-center">
-          <span class="material-symbols-outlined text-5xl text-turquoise">
-            search_off
-          </span>
+      <div class="col-span-full rounded-2xl bg-white p-12 text-center">
+        <span class="material-symbols-outlined text-5xl text-turquoise">
+          search_off
+        </span>
 
-          <h3 class="mt-4 text-xl font-bold text-navy">
-            مفيش نتائج مطابقة
-          </h3>
+        <h3 class="mt-4 text-xl font-bold text-navy">
+          مفيش نتائج مطابقة
+        </h3>
 
-          <p class="mt-2 text-slate-500">
-            جرب تغير كلمات البحث أو الفلاتر.
-          </p>
+        <p class="mt-2 text-slate-500">
+          جرب تغير كلمات البحث أو الفلاتر.
+        </p>
 
-          <button
-            type="button"
-            (click)="clearFilters()"
-            class="mt-5 rounded-xl bg-turquoise px-6 py-3 font-bold text-white"
-          >
-            عرض كل الأخصائيين
-          </button>
-        </div>
+        <button type="button" (click)="clearFilters()"
+          class="mt-5 rounded-xl bg-turquoise px-6 py-3 font-bold text-white">
+          عرض كل الأخصائيين
+        </button>
+      </div>
 
       }
 
@@ -229,3 +204,5 @@
 
   </section>
 </div>
+
+<app-footer></app-footer>
