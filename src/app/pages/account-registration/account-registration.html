@@ -1,0 +1,229 @@
+<div class="account-registration-page" dir="rtl" lang="ar">
+  <main class="account-main">
+    <section class="account-card" aria-labelledby="account-heading">
+      <a routerLink="/register" class="change-type-link">
+        <span aria-hidden="true">←</span>
+        تغيير نوع الحساب
+      </a>
+      <header class="account-heading">
+        <h1 id="account-heading">{{ isParent ? 'إنشاء حساب ولي أمر' : 'إنشاء حساب' }}</h1>
+        <p>ابدأ رحلتك مع ADHD Compass واكتشف الدعم والمعلومات المناسبة ليك.</p>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        @if (isParent) {
+          <section class="form-section" aria-label="بيانات ولي الأمر">
+            <div class="form-field">
+              <label for="fullName">الاسم بالكامل <span>*</span></label>
+              <input id="fullName" type="text" formControlName="fullName" placeholder="اكتب اسمك بالكامل" />
+              @if (form.controls['fullName'].touched && form.controls['fullName'].invalid) {
+                <small class="error-message">يرجى إدخال الاسم بالكامل.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="email">البريد الإلكتروني <span>*</span></label>
+              <input id="email" type="email" formControlName="email" placeholder="name@example.com" dir="ltr" />
+              @if (form.controls['email'].touched && form.controls['email'].invalid) {
+                <small class="error-message">يرجى إدخال بريد إلكتروني صحيح.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="phone">رقم الهاتف <span>*</span></label>
+              <input id="phone" type="tel" formControlName="phone" placeholder="01X XXXX XXXX" dir="ltr" />
+              @if (form.controls['phone'].touched && form.controls['phone'].invalid) {
+                <small class="error-message">يرجى إدخال رقم هاتف مصري صحيح.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="relation">صلة القرابة <span>*</span></label>
+              <select id="relation" formControlName="relation">
+                <option value="" disabled>اختر صلة القرابة</option>
+                <option value="father">الأب</option>
+                <option value="mother">الأم</option>
+                <option value="sibling">الأخ / الأخت</option>
+                <option value="grandparent">الجد / الجدة</option>
+                <option value="other">ولي أمر آخر</option>
+              </select>
+              @if (form.controls['relation'].touched && form.controls['relation'].invalid) {
+                <small class="error-message">يرجى اختيار صلة القرابة.</small>
+              }
+            </div>
+          </section>
+
+          <div class="section-divider"><span>بيانات الطفل</span></div>
+
+          <section class="form-section" aria-label="بيانات الطفل">
+            <div class="form-field">
+              <label for="childName">اسم الطفل بالكامل <span>*</span></label>
+              <input id="childName" type="text" formControlName="childName" placeholder="اكتب اسم الطفل بالكامل" />
+              @if (form.controls['childName'].touched && form.controls['childName'].invalid) {
+                <small class="error-message">يرجى إدخال اسم الطفل بالكامل.</small>
+              }
+            </div>
+
+            <div class="field-row">
+              <div class="form-field">
+                <label for="childBirthDate">تاريخ ميلاد الطفل <span>*</span></label>
+                <input id="childBirthDate" type="date" formControlName="childBirthDate" dir="ltr" />
+                @if (form.controls['childBirthDate'].touched && form.controls['childBirthDate'].invalid) {
+                  <small class="error-message">يرجى إدخال تاريخ الميلاد.</small>
+                }
+              </div>
+              <div class="form-field">
+                <label for="childGender">الجنس <span>*</span></label>
+                <select id="childGender" formControlName="childGender">
+                  <option value="" disabled>اختر الجنس</option>
+                  <option value="male">ذكر</option>
+                  <option value="female">أنثى</option>
+                </select>
+                @if (form.controls['childGender'].touched && form.controls['childGender'].invalid) {
+                  <small class="error-message">يرجى اختيار الجنس.</small>
+                }
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section diagnosis-section">
+            <fieldset>
+              <legend>هل تم تشخيص الطفل باضطراب فرط الحركة وتشتت الانتباه (ADHD)؟ <span>*</span></legend>
+              <div class="choice-row">
+                <label class="diagnosis-choice">
+                  <input type="radio" formControlName="diagnosisStatus" value="diagnosed" />
+                  <span>نعم، تم تشخيصه</span>
+                </label>
+                <label class="diagnosis-choice">
+                  <input type="radio" formControlName="diagnosisStatus" value="not_diagnosed" />
+                  <span>لا، لم يتم تشخيصه بعد</span>
+                </label>
+              </div>
+            </fieldset>
+          </section>
+        } @else {
+          <section class="form-section" aria-label="بياناتك الأساسية">
+            <div class="form-field">
+              <label for="fullName">الاسم بالكامل <span>*</span></label>
+              <input id="fullName" type="text" formControlName="fullName" placeholder="اكتب اسمك بالكامل" />
+              @if (form.controls['fullName'].touched && form.controls['fullName'].invalid) {
+                <small class="error-message">يرجى إدخال الاسم بالكامل.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="email">البريد الإلكتروني <span>*</span></label>
+              <input id="email" type="email" formControlName="email" placeholder="name@example.com" dir="ltr" />
+              @if (form.controls['email'].touched && form.controls['email'].invalid) {
+                <small class="error-message">يرجى إدخال بريد إلكتروني صحيح.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="phone">رقم الهاتف <span>*</span></label>
+              <input id="phone" type="tel" formControlName="phone" placeholder="01X XXXX XXXX" dir="ltr" />
+              @if (form.controls['phone'].touched && form.controls['phone'].invalid) {
+                <small class="error-message">يرجى إدخال رقم هاتف مصري صحيح.</small>
+              }
+            </div>
+
+            <div class="field-row">
+              <div class="form-field">
+                <label for="birthDate">تاريخ الميلاد <span>*</span></label>
+                <input id="birthDate" type="date" formControlName="birthDate" dir="ltr" />
+                @if (form.controls['birthDate'].touched && form.controls['birthDate'].invalid) {
+                  <small class="error-message">يرجى إدخال تاريخ الميلاد.</small>
+                }
+              </div>
+              <div class="form-field">
+                <label for="gender">الجنس <span>*</span></label>
+                <select id="gender" formControlName="gender">
+                  <option value="" disabled>اختر الجنس</option>
+                  <option value="male">ذكر</option>
+                  <option value="female">أنثى</option>
+                </select>
+                @if (form.controls['gender'].touched && form.controls['gender'].invalid) {
+                  <small class="error-message">يرجى اختيار الجنس.</small>
+                }
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section diagnosis-section">
+            <fieldset>
+              <legend>هل تم تشخيصك باضطراب فرط الحركة وتشتت الانتباه (ADHD)؟ <span>*</span></legend>
+              <div class="choice-row">
+                <label class="diagnosis-choice">
+                  <input type="radio" formControlName="diagnosisStatus" value="diagnosed" />
+                  <span>نعم، تم تشخيصي</span>
+                </label>
+                <label class="diagnosis-choice">
+                  <input type="radio" formControlName="diagnosisStatus" value="not_diagnosed" />
+                  <span>لا، لم يتم تشخيصي بعد</span>
+                </label>
+              </div>
+            </fieldset>
+          </section>
+        }
+
+        <section class="form-section security-section" aria-label="تأمين الحساب">
+          <div class="form-field">
+            <label for="password">كلمة المرور <span>*</span></label>
+            <div class="password-field">
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="٨ أحرف على الأقل تشمل أرقامًا ورموزًا"
+                autocomplete="new-password"
+              />
+              <button type="button" class="password-toggle" (click)="showPassword = !showPassword" aria-label="تبديل إظهار كلمة المرور">
+                {{ showPassword ? 'إخفاء' : 'إظهار' }}
+              </button>
+            </div>
+            @if (form.controls['password'].touched && form.controls['password'].hasError('required')) {
+              <small class="error-message">يرجى إدخال كلمة المرور.</small>
+            } @else if (form.controls['password'].touched && form.controls['password'].hasError('minlength')) {
+              <small class="error-message">يجب ألا تقل كلمة المرور عن ٨ أحرف.</small>
+            } @else if (form.controls['password'].touched && form.controls['password'].hasError('pattern')) {
+              <small class="error-message">يجب أن تحتوي كلمة المرور على رقم ورمز واحد على الأقل.</small>
+            } @else {
+              <small class="field-hint">كلمة مرور قوية تضمن حماية خصوصية حسابك.</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="passwordConfirm">تأكيد كلمة المرور <span>*</span></label>
+            <div class="password-field">
+              <input
+                id="passwordConfirm"
+                [type]="showPasswordConfirm ? 'text' : 'password'"
+                formControlName="passwordConfirm"
+                placeholder="أعد كتابة كلمة المرور"
+                autocomplete="new-password"
+              />
+              <button type="button" class="password-toggle" (click)="showPasswordConfirm = !showPasswordConfirm" aria-label="تبديل إظهار تأكيد كلمة المرور">
+                {{ showPasswordConfirm ? 'إخفاء' : 'إظهار' }}
+              </button>
+            </div>
+            @if (form.controls['passwordConfirm'].touched && form.controls['passwordConfirm'].invalid) {
+              <small class="error-message">يرجى تأكيد كلمة المرور.</small>
+            } @else if (form.controls['passwordConfirm'].touched && form.hasError('passwordMismatch')) {
+              <small class="error-message">كلمتا المرور غير متطابقتين.</small>
+            }
+          </div>
+        </section>
+
+        <button type="submit" class="submit-button">إنشاء الحساب <span aria-hidden="true">←</span></button>
+
+        @if (submitted) {
+          <p class="submission-notice" role="status">
+            تم التحقق من البيانات، لكن لم يتم إرسالها لأن ربط التسجيل بالخادم غير متاح حاليًا.
+          </p>
+        }
+
+        <p class="privacy-note">بياناتك الشخصية محفوظة، ونستخدمها لتقديم تجربة مناسبة ليك.</p>
+      </form>
+    </section>
+  </main>
+</div>

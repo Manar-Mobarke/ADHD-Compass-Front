@@ -1,0 +1,106 @@
+<div class="type-selection-page" dir="rtl" lang="ar">
+  <main class="selection-main">
+    <section class="selection-card" aria-labelledby="registration-heading">
+      <div class="page-heading">
+        <h1 id="registration-heading">إنشاء حساب</h1>
+        <p>ابدأ رحلتك مع ADHD Compass واختر نوع الحساب المناسب لك.</p>
+      </div>
+
+      <fieldset class="type-fieldset">
+        <legend>بتسجل لمين؟ <span aria-hidden="true">*</span></legend>
+
+        <div class="type-options">
+          <button
+            type="button"
+            class="type-option"
+            [class.selected]="selectedType === 'self'"
+            [attr.aria-pressed]="selectedType === 'self'"
+            (click)="selectType('self')"
+          >
+            <span class="option-top">
+              <span class="option-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="8" r="4"></circle>
+                  <path d="M5 21a7 7 0 0 1 14 0"></path>
+                </svg>
+              </span>
+              <span class="radio-indicator" aria-hidden="true"></span>
+            </span>
+            <span class="option-title">أسجل لنفسي</span>
+            <span class="option-description">إنشاء حساب لمتلقي الخدمة.</span>
+          </button>
+
+          <button
+            type="button"
+            class="type-option"
+            [class.selected]="selectedType === 'parent'"
+            [attr.aria-pressed]="selectedType === 'parent'"
+            (click)="selectType('parent')"
+          >
+            <span class="option-top">
+              <span class="option-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="9" cy="8" r="3"></circle>
+                  <circle cx="18" cy="9" r="2"></circle>
+                  <path d="M3 20a6 6 0 0 1 12 0m1-5a4 4 0 0 1 6 3v2h-4"></path>
+                </svg>
+              </span>
+              <span class="radio-indicator" aria-hidden="true"></span>
+            </span>
+            <span class="option-title">أسجل كولي أمر</span>
+            <span class="option-description">إنشاء حساب لمتابعة طفلك ودعمه.</span>
+          </button>
+
+          <button
+            type="button"
+            class="type-option"
+            [class.selected]="selectedType === 'specialist'"
+            [attr.aria-pressed]="selectedType === 'specialist'"
+            (click)="selectType('specialist')"
+          >
+            <span class="option-top">
+              <span class="option-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 3v18M3 12h18"></path>
+                  <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                </svg>
+              </span>
+              <span class="radio-indicator" aria-hidden="true"></span>
+            </span>
+            <span class="option-title">أسجل كمتخصص</span>
+            <span class="option-description">انضم إلى شبكة المتخصصين في ADHD Compass.</span>
+          </button>
+        </div>
+      </fieldset>
+
+      <div class="selection-action" aria-live="polite">
+        @if (selectedType === 'specialist') {
+          <a routerLink="/specialist-register" class="continue-button">
+            متابعة تسجيل المتخصصين
+            <span aria-hidden="true">←</span>
+          </a>
+        } @else if (selectedType === 'self') {
+          <a routerLink="/self-register" class="continue-button">
+            متابعة تسجيل حسابي
+            <span aria-hidden="true">←</span>
+          </a>
+        } @else if (selectedType === 'parent') {
+          <a routerLink="/parent-register" class="continue-button">
+            متابعة تسجيل ولي الأمر
+            <span aria-hidden="true">←</span>
+          </a>
+        } @else {
+          <p class="selection-hint">اختر نوع الحساب أعلاه للمتابعة.</p>
+        }
+      </div>
+    </section>
+
+    <p class="privacy-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+        <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"></path>
+        <path d="m9 12 2 2 4-4"></path>
+      </svg>
+      بياناتك الشخصية محفوظة ومشفرة وفق أعلى معايير الخصوصية الصحية.
+    </p>
+  </main>
+</div>

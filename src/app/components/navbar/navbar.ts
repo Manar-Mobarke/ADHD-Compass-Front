@@ -1,6 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Language, LanguageCode } from '../../services/language';
-import { RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -11,10 +13,24 @@ import { RouterLink } from '@angular/router';
 })
 export class Navbar {
   private readonly language = inject(Language);
+  private readonly router = inject(Router);
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects)
+    ),
+    { initialValue: this.router.url }
+  );
   currentLang = this.language.currentLang;
   direction = this.language.direction;
 
   isMenuOpen = signal(false);
+  private readonly currentPath = computed(() => this.currentUrl().split(/[?#]/, 1)[0]);
+  isAuthRoute = computed(() =>
+    ['/register', '/self-register', '/parent-register', '/specialist-register', '/login']
+      .includes(this.currentPath())
+  );
+  isSpecialistRegistration = computed(() => this.currentPath() === '/specialist-register');
 
   /**
    * التعليقات النصية الخاصة بالشريط العلوي ثابتة باللغة العربية.
@@ -24,6 +40,9 @@ export class Navbar {
     ar: {
       brand: 'ADHD Compass',
       tagline: 'البوصلة',
+      recipientPortal: 'بوابة متلقي الخدمة والدعم',
+      specialistPortal: 'بوابة انضمام المتخصصين',
+      existingAccount: 'لديك حساب بالفعل؟',
       mainNavigation: 'التنقل الرئيسي',
       mobileNavigation: 'التنقل على الهاتف',
       home: 'الرئيسية',
@@ -39,6 +58,9 @@ export class Navbar {
     en: {
       brand: 'ADHD Compass',
       tagline: 'Your compass to understanding ADHD',
+      recipientPortal: 'Service recipient and support portal',
+      specialistPortal: 'Specialist registration portal',
+      existingAccount: 'Already have an account?',
       mainNavigation: 'Main navigation',
       mobileNavigation: 'Mobile navigation',
       home: 'Home',
@@ -54,6 +76,9 @@ export class Navbar {
   } satisfies Record<LanguageCode, {
     brand: string;
     tagline: string;
+    recipientPortal: string;
+    specialistPortal: string;
+    existingAccount: string;
     mainNavigation: string;
     mobileNavigation: string;
     home: string;

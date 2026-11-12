@@ -1,0 +1,1071 @@
+
+<div dir="rtl" lang="ar" class="registration-page">
+  <main class="registration-container">
+    <a routerLink="/register" class="back-to-registration-types">
+      <span aria-hidden="true">←</span>
+      تغيير نوع الحساب
+    </a>
+    <section class="registration-card">
+      <div class="progress-section">
+        <div class="progress-heading">
+          <div class="progress-copy">
+            <span class="progress-percent">{{ progressPercent }}% مكتمل</span>
+            <h1>الخطوة {{ currentStep }} من {{ steps.length }}: {{ steps[currentStep - 1] }}</h1>
+          </div>
+          <span class="step-number">{{ currentStep }}</span>
+        </div>
+
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+
+        <div class="steps-grid">
+          @for (step of steps; track step; let i = $index) {
+            <div
+              class="step-item"
+              [class.active]="i + 1 === currentStep"
+              [class.completed]="i + 1 < currentStep"
+            >
+              <span class="step-circle">
+                @if (i + 1 < currentStep) {
+                  ✓
+                } @else {
+                  {{ i + 1 }}
+                }
+              </span>
+              <span class="step-name">{{ step }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (currentStep === 1) {
+        <div class="form-heading">
+          <h2>معلوماتك الشخصية</h2>
+          <p>أدخل بياناتك الأساسية للبدء في إنشاء ملفك كمتخصص.</p>
+        </div>
+
+        <form [formGroup]="personalForm" (ngSubmit)="onSubmit()" novalidate class="wizard-form">
+          <div class="field-row two-up">
+            <div class="form-field">
+              <label for="fullName">الاسم بالكامل <span>*</span></label>
+              <input
+                id="fullName"
+                type="text"
+                formControlName="fullName"
+                placeholder="اكتب اسمك كاملاً"
+              />
+              @if (personalControls['fullName'].touched && personalControls['fullName'].invalid) {
+                <small class="error-message">يرجى إدخال اسم كامل صحيح.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="professionalTitle">المسمى المهني <span>*</span></label>
+              <input
+                id="professionalTitle"
+                type="text"
+                formControlName="professionalTitle"
+                placeholder="مثال: أخصائي نفسي"
+              />
+              @if (personalControls['professionalTitle'].touched && personalControls['professionalTitle'].invalid) {
+                <small class="error-message">يجب إدخال المسمى المهني.</small>
+              }
+            </div>
+          </div>
+
+          <div class="field-row two-up">
+            <div class="form-field">
+              <label for="email">البريد الإلكتروني <span>*</span></label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="name@example.com"
+              />
+              @if (personalControls['email'].touched && personalControls['email'].invalid) {
+                <small class="error-message">يرجى إدخال بريد إلكتروني صحيح.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="phone">رقم الهاتف <span>*</span></label>
+              <input
+                id="phone"
+                type="tel"
+                formControlName="phone"
+                placeholder="01012345678"
+              />
+              @if (personalControls['phone'].touched && personalControls['phone'].invalid) {
+                <small class="error-message">يرجى إدخال رقم هاتف صحيح بالتنسيق المصري.</small>
+              }
+            </div>
+          </div>
+
+          <div class="field-row two-up">
+            <div class="form-field">
+              <label for="country">الدولة <span>*</span></label>
+              <input id="country" type="text" formControlName="country" />
+            </div>
+
+            <div class="form-field">
+              <label for="city">المدينة <span>*</span></label>
+              <input id="city" type="text" formControlName="city" placeholder="المدينة" />
+              @if (personalControls['city'].touched && personalControls['city'].invalid) {
+                <small class="error-message">المدينة مطلوبة.</small>
+              }
+            </div>
+          </div>
+
+          <div class="form-field photo-field">
+            <label>صورة الملف الشخصي</label>
+            <div class="upload-box">
+              <input
+                id="profilePhoto"
+                type="file"
+                accept="image/*"
+                (change)="onPhotoSelected($event)"
+              />
+              <label class="upload-button" for="profilePhoto">
+                <span class="material-symbols-outlined">upload_file</span>
+                <span>{{ selectedPhotoName || 'اختر صورة' }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 2) {
+        <div class="form-heading auth-heading">
+          <h2>أمن حسابك</h2>
+          <p>اختر كلمة مرور قوية وحددها بشكل صحيح لضمان أمان حسابك.</p>
+        </div>
+
+        <form [formGroup]="accountForm" (ngSubmit)="onAccountSubmit()" novalidate class="wizard-form">
+          <div class="form-field password-field">
+            <label for="password">كلمة المرور <span>*</span></label>
+            <div class="input-shell">
+              <span class="field-icon" aria-hidden="true">◌</span>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                placeholder="••••••••••••••"
+                autocomplete="new-password"
+              />
+            </div>
+            @if (accountControls['password'].touched && accountControls['password'].invalid) {
+              <small class="error-message">يجب أن تكون كلمة المرور 8 أحرف على الأقل.</small>
+            }
+          </div>
+
+          <div class="form-field password-field">
+            <label for="confirmPassword">تأكيد كلمة المرور <span>*</span></label>
+            <div class="input-shell">
+              <span class="field-icon" aria-hidden="true">◌</span>
+              <input
+                id="confirmPassword"
+                type="password"
+                formControlName="confirmPassword"
+                placeholder="••••••••••••••"
+                autocomplete="new-password"
+              />
+            </div>
+            @if (
+              accountControls['confirmPassword'].touched &&
+              (accountControls['confirmPassword'].invalid || accountForm.hasError('passwordMismatch'))
+            ) {
+              <small class="error-message">تأكيد كلمة المرور غير مطابق.</small>
+            }
+          </div>
+
+          <div class="form-actions auth-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 3) {
+        <div class="form-heading">
+          <h2>التعليم والموقع</h2>
+          <p>أضف بياناتك التعليمية وموقعك المهني.</p>
+        </div>
+
+        <form [formGroup]="educationForm" (ngSubmit)="onEducationSubmit()" novalidate class="wizard-form">
+          <div class="form-field">
+            <label for="university">الجامعة <span>*</span></label>
+            <input
+              id="university"
+              type="text"
+              formControlName="university"
+              placeholder="اكتب اسم الجامعة"
+            />
+            @if (educationControls['university'].touched && educationControls['university'].invalid) {
+              <small class="error-message">يرجى إدخال اسم الجامعة.</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="graduationYear">سنة التخرج <span>*</span></label>
+            <input
+              id="graduationYear"
+              type="number"
+              formControlName="graduationYear"
+              min="1960"
+              max="2100"
+              placeholder="مثال: 2018"
+            />
+            @if (educationControls['graduationYear'].touched && educationControls['graduationYear'].invalid) {
+              <small class="error-message">يرجى إدخال سنة التخرج بشكل صحيح.</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="address">العنوان <span>*</span></label>
+            <input
+              id="address"
+              type="text"
+              formControlName="address"
+              placeholder="اكتب عنوانك"
+            />
+            @if (educationControls['address'].touched && educationControls['address'].invalid) {
+              <small class="error-message">يرجى إدخال العنوان.</small>
+            }
+          </div>
+
+          <div class="form-actions auth-actions step-3-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 4) {
+        <div class="form-heading step-detail-heading">
+          <h2>المعلومات المهنية</h2>
+          <p>أضف معلوماتك المهنية وخبرتك في مجال ADHD.</p>
+        </div>
+
+        <form [formGroup]="professionalForm" (ngSubmit)="onProfessionalSubmit()" novalidate class="wizard-form step-detail-form">
+          <div class="form-field">
+            <label for="specialization">التخصص <span>*</span></label>
+            <input
+              id="specialization"
+              type="text"
+              formControlName="specialization"
+              placeholder="اكتب تخصصك"
+            />
+            @if (professionalControls['specialization'].touched && professionalControls['specialization'].invalid) {
+              <small class="error-message">يرجى إدخال التخصص.</small>
+            }
+          </div>
+
+          <fieldset class="choice-field">
+            <legend>الفئة العمرية <span>*</span></legend>
+            <div class="choice-grid three-columns">
+              <label class="choice-option" [class.selected]="selectedAgeGroups.includes('children')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedAgeGroups.includes('children')"
+                  (change)="onAgeGroupChange('children', $event)"
+                />
+                <span>الأطفال</span>
+              </label>
+              <label class="choice-option" [class.selected]="selectedAgeGroups.includes('adolescents')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedAgeGroups.includes('adolescents')"
+                  (change)="onAgeGroupChange('adolescents', $event)"
+                />
+                <span>المراهقون</span>
+              </label>
+              <label class="choice-option" [class.selected]="selectedAgeGroups.includes('adults')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedAgeGroups.includes('adults')"
+                  (change)="onAgeGroupChange('adults', $event)"
+                />
+                <span>البالغون</span>
+              </label>
+            </div>
+            @if (professionalControls['ageGroups'].touched && professionalControls['ageGroups'].invalid) {
+              <small class="error-message">يرجى اختيار فئة عمرية واحدة على الأقل.</small>
+            }
+          </fieldset>
+
+          <fieldset class="choice-field">
+            <legend>نظام العمل <span>*</span></legend>
+            <div class="choice-grid three-columns">
+              <label class="choice-option" [class.selected]="professionalControls['workMode'].value === 'online'">
+                <input class="choice-input" type="radio" formControlName="workMode" value="online" />
+                <span>أونلاين</span>
+              </label>
+              <label class="choice-option" [class.selected]="professionalControls['workMode'].value === 'in-person'">
+                <input class="choice-input" type="radio" formControlName="workMode" value="in-person" />
+                <span>حضوري</span>
+              </label>
+              <label class="choice-option" [class.selected]="professionalControls['workMode'].value === 'both'">
+                <input class="choice-input" type="radio" formControlName="workMode" value="both" />
+                <span>الاثنين معًا</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field-row two-up">
+            <div class="form-field">
+              <label for="childExperience">سنوات الخبرة مع الأطفال <span>*</span></label>
+              <input
+                id="childExperience"
+                type="number"
+                formControlName="childExperience"
+                min="0"
+                step="1"
+                placeholder="مثال: 5"
+              />
+              @if (professionalControls['childExperience'].touched && professionalControls['childExperience'].invalid) {
+                <small class="error-message">يرجى إدخال عدد سنوات صحيح لا يقل عن صفر.</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="adhdExperience">سنوات الخبرة في ADHD <span>*</span></label>
+              <input
+                id="adhdExperience"
+                type="number"
+                formControlName="adhdExperience"
+                min="0"
+                step="1"
+                placeholder="مثال: 3"
+              />
+              @if (professionalControls['adhdExperience'].touched && professionalControls['adhdExperience'].invalid) {
+                <small class="error-message">يرجى إدخال عدد سنوات صحيح لا يقل عن صفر.</small>
+              }
+            </div>
+          </div>
+
+          <fieldset class="choice-field">
+            <legend>عدد حالات ADHD التي تعاملت معها <span>*</span></legend>
+            <div class="choice-grid four-columns">
+              <label class="choice-option" [class.selected]="professionalControls['caseCount'].value === 'less-than-10'">
+                <input class="choice-input" type="radio" formControlName="caseCount" value="less-than-10" />
+                <span>أقل من 10</span>
+              </label>
+              <label class="choice-option" [class.selected]="professionalControls['caseCount'].value === '10-30'">
+                <input class="choice-input" type="radio" formControlName="caseCount" value="10-30" />
+                <span>10–30</span>
+              </label>
+              <label class="choice-option" [class.selected]="professionalControls['caseCount'].value === '30-50'">
+                <input class="choice-input" type="radio" formControlName="caseCount" value="30-50" />
+                <span>30–50</span>
+              </label>
+              <label class="choice-option" [class.selected]="professionalControls['caseCount'].value === 'more-than-50'">
+                <input class="choice-input" type="radio" formControlName="caseCount" value="more-than-50" />
+                <span>أكثر من 50</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions auth-actions step-wizard-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 5) {
+        <div class="form-heading step-detail-heading">
+          <h2>النهج المهني</h2>
+          <p>شاركنا أسلوبك في التعامل مع حالات ADHD والتواصل مع الأسرة.</p>
+        </div>
+
+        <form [formGroup]="methodologyForm" (ngSubmit)="onMethodologySubmit()" novalidate class="wizard-form step-detail-form">
+          <div class="form-field">
+            <label for="focusStrategy">كيف تحافظ على انتباه المريض وتساعده على التركيز؟ <span>*</span></label>
+            <textarea
+              id="focusStrategy"
+              formControlName="focusStrategy"
+              rows="3"
+              placeholder="اكتب باختصار أسلوبك في جذب انتباه المريض والحفاظ عليه..."
+            ></textarea>
+            @if (methodologyControls['focusStrategy'].touched && methodologyControls['focusStrategy'].invalid) {
+              <small class="error-message">يرجى توضيح أسلوبك في الحفاظ على انتباه المريض.</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="parentCommunication">كيف تتواصل مع الوالدين وتشرح لهم المعلومات والتوصيات؟ <span>*</span></label>
+            <textarea
+              id="parentCommunication"
+              formControlName="parentCommunication"
+              rows="3"
+              placeholder="اكتب باختصار أسلوبك في التواصل مع الوالدين..."
+            ></textarea>
+            @if (methodologyControls['parentCommunication'].touched && methodologyControls['parentCommunication'].invalid) {
+              <small class="error-message">يرجى توضيح أسلوبك في التواصل مع الوالدين.</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="referralCriteria">متى توصي بتحويل الحالة إلى أخصائي تخاطب أو متخصص آخر؟ <span>*</span></label>
+            <textarea
+              id="referralCriteria"
+              formControlName="referralCriteria"
+              rows="3"
+              placeholder="اذكر الحالات أو المؤشرات التي تستدعي التحويل إلى متخصص آخر..."
+            ></textarea>
+            @if (methodologyControls['referralCriteria'].touched && methodologyControls['referralCriteria'].invalid) {
+              <small class="error-message">يرجى توضيح متى توصي بتحويل الحالة.</small>
+            }
+          </div>
+
+          <div class="form-actions auth-actions step-wizard-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 6) {
+        <div class="form-heading step-detail-heading">
+          <h2>الخدمات الطبية</h2>
+          <p>وضح لنا الخدمات الطبية التي تقدمها ضمن تخصصك.</p>
+        </div>
+
+        <form [formGroup]="medicalServicesForm" (ngSubmit)="onMedicalServicesSubmit()" novalidate class="wizard-form step-detail-form">
+          <fieldset class="choice-field">
+            <legend>هل تقوم بتشخيص ADHD؟ <span>*</span></legend>
+            <div class="choice-grid two-columns">
+              <label class="choice-option" [class.selected]="medicalServicesControls['adhdDiagnosis'].value === 'yes'">
+                <input class="choice-input" type="radio" formControlName="adhdDiagnosis" value="yes" />
+                <span>نعم</span>
+              </label>
+              <label class="choice-option" [class.selected]="medicalServicesControls['adhdDiagnosis'].value === 'no'">
+                <input class="choice-input" type="radio" formControlName="adhdDiagnosis" value="no" />
+                <span>لا</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="choice-field">
+            <legend>هل تقوم بوصف أو تعديل الأدوية؟ <span>*</span></legend>
+            <div class="choice-grid two-columns">
+              <label class="choice-option" [class.selected]="medicalServicesControls['adhdMedication'].value === 'yes'">
+                <input class="choice-input" type="radio" formControlName="adhdMedication" value="yes" />
+                <span>نعم</span>
+              </label>
+              <label class="choice-option" [class.selected]="medicalServicesControls['adhdMedication'].value === 'no'">
+                <input class="choice-input" type="radio" formControlName="adhdMedication" value="no" />
+                <span>لا</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions auth-actions step-wizard-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 7) {
+        <div class="form-heading step-detail-heading">
+          <h2>الشهادات</h2>
+          <p>أضف الشهادات والوثائق المهنية المطلوبة لمراجعة ملفك.</p>
+        </div>
+
+        <form
+          [formGroup]="certificatesForm"
+          (ngSubmit)="onCertificatesSubmit()"
+          novalidate
+          class="wizard-form step-detail-form certificates-form"
+        >
+          <div formArrayName="certificates">
+            @for (certificate of certificates.controls; track $index; let i = $index) {
+              <section class="certificate-card" [formGroupName]="i">
+                <div class="certificate-card-heading">
+                  <h3>الشهادة {{ i + 1 }}</h3>
+                  <button
+                    type="button"
+                    class="remove-certificate-button"
+                    [attr.aria-label]="'حذف الشهادة ' + (i + 1)"
+                    title="حذف الشهادة"
+                    (click)="removeCertificate(i)"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+
+                <div class="form-field">
+                  <label [for]="'certificateName' + i">اسم الشهادة <span>*</span></label>
+                  <input
+                    [id]="'certificateName' + i"
+                    type="text"
+                    formControlName="name"
+                    placeholder="مثال: ماجستير الطب النفسي للأطفال"
+                  />
+                  @if (certificate.get('name')?.touched && certificate.get('name')?.invalid) {
+                    <small class="error-message">يرجى إدخال اسم الشهادة.</small>
+                  }
+                </div>
+
+                <div class="field-row two-up">
+                  <div class="form-field">
+                    <label [for]="'certificateIssuer' + i">الجهة المانحة</label>
+                    <input
+                      [id]="'certificateIssuer' + i"
+                      type="text"
+                      formControlName="issuer"
+                      placeholder="مثال: جامعة عين شمس"
+                    />
+                  </div>
+
+                  <div class="form-field">
+                    <label [for]="'certificateDate' + i">تاريخ الإصدار</label>
+                    <input
+                      [id]="'certificateDate' + i"
+                      type="date"
+                      formControlName="issueDate"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-field certificate-upload-field">
+                  <label [for]="'certificateFile' + i">ملف الشهادة <span>*</span></label>
+                  <div class="certificate-upload">
+                    <input
+                      [id]="'certificateFile' + i"
+                      type="file"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      (change)="onCertificateFileSelected(i, $event)"
+                    />
+                    <label [for]="'certificateFile' + i">
+                      <span class="certificate-upload-icon" aria-hidden="true">↑</span>
+                      <span>
+                        {{ certificate.get('file')?.value?.name || 'انقر لرفع الملف أو اسحبه هنا' }}
+                      </span>
+                      <small>PDF, DOC, DOCX, JPG, PNG - بحد أقصى 5 ميجابايت</small>
+                    </label>
+                  </div>
+                  @if (certificate.get('file')?.touched && certificate.get('file')?.hasError('required')) {
+                    <small class="error-message">يرجى إرفاق ملف الشهادة.</small>
+                  } @else if (certificate.get('file')?.hasError('fileType')) {
+                    <small class="error-message">نوع الملف غير مدعوم. اختر PDF أو DOC, DOCX أو صورة.</small>
+                  } @else if (certificate.get('file')?.hasError('fileSize')) {
+                    <small class="error-message">يجب ألا يتجاوز حجم الملف 5 ميجابايت.</small>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+          @if (certificates.length === 0 && certificates.touched) {
+            <small class="error-message">يرجى إضافة شهادة واحدة على الأقل.</small>
+          }
+
+          <button type="button" class="add-certificate-button" (click)="addCertificate()">
+            <span aria-hidden="true">+</span>
+            <span>إضافة شهادة أخرى</span>
+          </button>
+
+          <div class="form-actions auth-actions step-wizard-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 8) {
+        <div class="form-heading step-detail-heading">
+          <h2>الأنشطة</h2>
+          <p>أضف الأنشطة أو الممارسات التي تستخدمها ضمن عملك مع الحالات.</p>
+        </div>
+
+        <form
+          [formGroup]="activitiesForm"
+          (ngSubmit)="onActivitiesSubmit()"
+          novalidate
+          class="wizard-form step-detail-form activities-form"
+        >
+          <div formArrayName="activities">
+            @for (activity of activities.controls; track $index; let i = $index) {
+              <section class="activity-card" [formGroupName]="i">
+                <div class="activity-card-heading">
+                  <h3><span aria-hidden="true"></span>النشاط {{ i + 1 }}</h3>
+                  @if (activities.length > 1) {
+                    <button
+                      type="button"
+                      class="remove-activity-button"
+                      [attr.aria-label]="'حذف النشاط ' + (i + 1)"
+                      (click)="removeActivity(i)"
+                    >
+                      حذف النشاط
+                    </button>
+                  }
+                </div>
+
+                <div class="form-field">
+                  <label [for]="'activityName' + i">اسم النشاط <span>*</span></label>
+                  <input
+                    [id]="'activityName' + i"
+                    type="text"
+                    formControlName="name"
+                    placeholder="مثال: تدريب الوظائف التنفيذية وإدارة الوقت"
+                  />
+                  @if (activity.get('name')?.touched && activity.get('name')?.invalid) {
+                    <small class="error-message">يرجى إدخال اسم النشاط.</small>
+                  }
+                </div>
+
+                <div class="form-field">
+                  <label [for]="'activityDescription' + i">وصف النشاط <span>*</span></label>
+                  <textarea
+                    [id]="'activityDescription' + i"
+                    formControlName="description"
+                    rows="4"
+                    placeholder="اكتب باختصار آلية تطبيق النشاط مع الحالات وأهدافه..."
+                  ></textarea>
+                  @if (activity.get('description')?.touched && activity.get('description')?.invalid) {
+                    <small class="error-message">يرجى إدخال وصف النشاط.</small>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+
+          <button type="button" class="add-activity-button" (click)="addActivity()">
+            <span aria-hidden="true">+</span>
+            <span>إضافة نشاط</span>
+          </button>
+
+          <div class="form-actions auth-actions step-wizard-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 9) {
+        <div class="form-heading step-detail-heading">
+          <h2>المنصات والمواعيد</h2>
+          <p>حدد المنصات التي تستخدمها ومواعيد إتاحة جلساتك.</p>
+        </div>
+
+        <form
+          [formGroup]="scheduleForm"
+          (ngSubmit)="onScheduleSubmit()"
+          novalidate
+          class="wizard-form step-detail-form schedule-form"
+        >
+          <fieldset class="choice-field">
+            <legend>المنصات التي تستخدمها للجلسات أونلاين <span>*</span></legend>
+            <div class="choice-grid four-columns">
+              <label class="choice-option" [class.selected]="selectedPlatforms.includes('zoom')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedPlatforms.includes('zoom')"
+                  (change)="onPlatformChange('zoom', $event)"
+                />
+                <span>Zoom</span>
+              </label>
+              <label class="choice-option" [class.selected]="selectedPlatforms.includes('google-meet')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedPlatforms.includes('google-meet')"
+                  (change)="onPlatformChange('google-meet', $event)"
+                />
+                <span>Google Meet</span>
+              </label>
+              <label class="choice-option" [class.selected]="selectedPlatforms.includes('microsoft-teams')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedPlatforms.includes('microsoft-teams')"
+                  (change)="onPlatformChange('microsoft-teams', $event)"
+                />
+                <span>Microsoft Teams</span>
+              </label>
+              <label class="choice-option" [class.selected]="selectedPlatforms.includes('other')">
+                <input
+                  class="choice-input"
+                  type="checkbox"
+                  [checked]="selectedPlatforms.includes('other')"
+                  (change)="onPlatformChange('other', $event)"
+                />
+                <span>أخرى</span>
+              </label>
+            </div>
+            @if (scheduleForm.controls['platforms'].touched && scheduleForm.controls['platforms'].invalid) {
+              <small class="error-message">يرجى اختيار منصة واحدة على الأقل.</small>
+            }
+          </fieldset>
+
+          <fieldset class="choice-field schedule-fieldset">
+            <legend>المواعيد المتاحة للجلسات <span>*</span></legend>
+            <div formArrayName="slots">
+              @for (slot of scheduleSlots.controls; track $index; let i = $index) {
+                <section class="schedule-slot" [formGroupName]="i">
+                  <div class="form-field">
+                    <label [for]="'scheduleDay' + i">اليوم <span>*</span></label>
+                    <select [id]="'scheduleDay' + i" formControlName="day">
+                      <option value="">اختر اليوم</option>
+                      <option value="saturday">السبت</option>
+                      <option value="sunday">الأحد</option>
+                      <option value="monday">الاثنين</option>
+                      <option value="tuesday">الثلاثاء</option>
+                      <option value="wednesday">الأربعاء</option>
+                      <option value="thursday">الخميس</option>
+                      <option value="friday">الجمعة</option>
+                    </select>
+                    @if (slot.get('day')?.touched && slot.get('day')?.invalid) {
+                      <small class="error-message">يرجى اختيار اليوم.</small>
+                    }
+                  </div>
+
+                  <div class="form-field">
+                    <label [for]="'scheduleStart' + i">من <span>*</span></label>
+                    <input [id]="'scheduleStart' + i" type="time" formControlName="startTime" />
+                    @if (slot.get('startTime')?.touched && slot.get('startTime')?.invalid) {
+                      <small class="error-message">يرجى تحديد وقت البداية.</small>
+                    }
+                  </div>
+
+                  <div class="form-field">
+                    <label [for]="'scheduleEnd' + i">إلى <span>*</span></label>
+                    <input [id]="'scheduleEnd' + i" type="time" formControlName="endTime" />
+                    @if (slot.get('endTime')?.touched && slot.get('endTime')?.invalid) {
+                      <small class="error-message">يرجى تحديد وقت النهاية.</small>
+                    }
+                  </div>
+
+                  @if (slot.hasError('invalidTimeRange') && slot.touched) {
+                    <small class="error-message schedule-time-error">يجب أن يكون وقت النهاية بعد وقت البداية.</small>
+                  }
+
+                  @if (scheduleSlots.length > 1) {
+                    <button
+                      type="button"
+                      class="remove-slot-button"
+                      [attr.aria-label]="'حذف موعد ' + (i + 1)"
+                      (click)="removeScheduleSlot(i)"
+                    >
+                      حذف الموعد
+                    </button>
+                  }
+                </section>
+              }
+            </div>
+            <button type="button" class="add-slot-button" (click)="addScheduleSlot()">
+              <span aria-hidden="true">+</span>
+              <span>إضافة موعد آخر</span>
+            </button>
+          </fieldset>
+
+          <div class="form-actions auth-actions step-wizard-actions">
+            <button type="button" class="secondary-button" (click)="goBack()">
+              <span class="arrow-left">←</span>
+              <span>السابق</span>
+            </button>
+            <button type="submit" class="primary-button">
+              <span>التالي</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      } @else if (currentStep === 10 && !submitted) {
+        <div class="form-heading step-detail-heading">
+          <h2>مراجعة البيانات وإرسال الطلب</h2>
+          <p>راجع بياناتك قبل الإرسال. يمكنك تعديل أي قسم بالضغط على زر «تعديل».</p>
+        </div>
+
+        <div class="review-sections">
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>المعلومات الشخصية</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(1)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <dl class="review-grid">
+              <div><dt>الاسم الكامل</dt><dd>{{ personalControls['fullName'].value || '—' }}</dd></div>
+              <div><dt>المسمى المهني</dt><dd>{{ personalControls['professionalTitle'].value || '—' }}</dd></div>
+              <div><dt>البريد الإلكتروني</dt><dd dir="ltr">{{ personalControls['email'].value || '—' }}</dd></div>
+              <div><dt>رقم الهاتف</dt><dd dir="ltr">{{ personalControls['phone'].value || '—' }}</dd></div>
+              <div><dt>الدولة</dt><dd>{{ personalControls['country'].value || '—' }}</dd></div>
+              <div><dt>المدينة</dt><dd>{{ personalControls['city'].value || '—' }}</dd></div>
+              <div><dt>صورة الملف الشخصي</dt><dd>{{ selectedPhotoName || 'لم يتم إرفاق صورة' }}</dd></div>
+            </dl>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>تأمين الحساب</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(2)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <p class="review-note">تم إعداد كلمة المرور. لا تظهر بيانات كلمة المرور في شاشة المراجعة.</p>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>التعليم والموقع</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(3)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <dl class="review-grid">
+              <div><dt>الجامعة</dt><dd>{{ educationControls['university'].value || '—' }}</dd></div>
+              <div><dt>سنة التخرج</dt><dd>{{ educationControls['graduationYear'].value || '—' }}</dd></div>
+              <div class="review-wide"><dt>العنوان</dt><dd>{{ educationControls['address'].value || '—' }}</dd></div>
+            </dl>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>المعلومات المهنية</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(4)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <dl class="review-grid">
+              <div><dt>التخصص</dt><dd>{{ professionalControls['specialization'].value || '—' }}</dd></div>
+              <div><dt>الفئات العمرية</dt><dd>{{ ageGroupLabels.join('، ') || '—' }}</dd></div>
+              <div>
+                <dt>نظام العمل</dt>
+                <dd>
+                  @switch (professionalControls['workMode'].value) {
+                    @case ('online') { أونلاين }
+                    @case ('in-person') { حضوري }
+                    @case ('both') { الاثنين معًا }
+                    @default { — }
+                  }
+                </dd>
+              </div>
+              <div><dt>سنوات الخبرة مع الأطفال</dt><dd>{{ professionalControls['childExperience'].value || '0' }}</dd></div>
+              <div><dt>سنوات الخبرة في ADHD</dt><dd>{{ professionalControls['adhdExperience'].value || '0' }}</dd></div>
+              <div>
+                <dt>عدد الحالات السابقة</dt>
+                <dd>
+                  @switch (professionalControls['caseCount'].value) {
+                    @case ('less-than-10') { أقل من 10 }
+                    @case ('10-30') { 10–30 }
+                    @case ('30-50') { 30–50 }
+                    @case ('more-than-50') { أكثر من 50 }
+                    @default { — }
+                  }
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>النهج المهني</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(5)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <dl class="review-stack">
+              <div><dt>أسلوب الحفاظ على الانتباه</dt><dd>{{ methodologyControls['focusStrategy'].value || '—' }}</dd></div>
+              <div><dt>التواصل مع الوالدين</dt><dd>{{ methodologyControls['parentCommunication'].value || '—' }}</dd></div>
+              <div><dt>معايير تحويل الحالة</dt><dd>{{ methodologyControls['referralCriteria'].value || '—' }}</dd></div>
+            </dl>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>الخدمات الطبية</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(6)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <dl class="review-grid">
+              <div>
+                <dt>تشخيص ADHD</dt>
+                <dd>{{ medicalServicesControls['adhdDiagnosis'].value === 'yes' ? 'نعم' : 'لا' }}</dd>
+              </div>
+              <div>
+                <dt>وصف أو تعديل الأدوية</dt>
+                <dd>{{ medicalServicesControls['adhdMedication'].value === 'yes' ? 'نعم' : 'لا' }}</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>الشهادات والوثائق</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(7)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <div class="review-list">
+              @for (certificate of certificates.controls; track $index; let i = $index) {
+                <div class="review-list-item review-list-item-stacked">
+                  <strong>الشهادة {{ i + 1 }}: {{ certificate.get('name')?.value || '—' }}</strong>
+                  <span>الجهة المانحة: {{ certificate.get('issuer')?.value || '—' }}</span>
+                  <span>تاريخ الإصدار: {{ certificate.get('issueDate')?.value || '—' }}</span>
+                  <span>الملف: {{ certificate.get('file')?.value?.name || '—' }}</span>
+                </div>
+              }
+            </div>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>الأنشطة</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(8)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <div class="review-list">
+              @for (activity of activities.controls; track $index; let i = $index) {
+                <div class="review-list-item review-list-item-stacked">
+                  <strong>النشاط {{ i + 1 }}: {{ activity.get('name')?.value || '—' }}</strong>
+                  <span>{{ activity.get('description')?.value || '—' }}</span>
+                </div>
+              }
+            </div>
+          </section>
+
+          <section class="review-card">
+            <div class="review-card-heading">
+              <h3>المنصات والمواعيد</h3>
+              <button type="button" class="review-edit-button" (click)="editStep(9)">
+                <span>تعديل</span><span class="review-edit-arrow" aria-hidden="true">←</span>
+              </button>
+            </div>
+            <div class="review-stack">
+              <div><dt>المنصات</dt><dd>{{ selectedPlatformLabels.join('، ') || '—' }}</dd></div>
+              <div>
+                <dt>المواعيد المتاحة</dt>
+                <dd>
+                  @for (slot of scheduleSlots.controls; track $index) {
+                    <span class="review-schedule-line">
+                      {{ dayLabel(slot.get('day')?.value) }}:
+                      {{ slot.get('startTime')?.value }} – {{ slot.get('endTime')?.value }}
+                    </span>
+                  }
+                </dd>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="form-actions auth-actions step-wizard-actions review-actions">
+          <button type="button" class="secondary-button" (click)="goBack()">
+            <span class="arrow-left">←</span>
+            <span>السابق</span>
+          </button>
+          <button type="button" class="primary-button" (click)="onRegistrationSubmit()">
+            <span>إرسال طلب التسجيل</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      } @else if (submitted) {
+        <section class="registration-confirmation" role="status" aria-live="polite">
+          <div class="confirmation-card">
+            <div class="confirmation-heading">
+              <div class="confirmation-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none">
+                  <rect x="10" y="7" width="25" height="32" rx="4"></rect>
+                  <path d="M16 16h13M16 22h9"></path>
+                  <circle cx="34" cy="33" r="8"></circle>
+                  <path d="M34 29v4l3 2"></path>
+                </svg>
+              </div>
+              <span class="confirmation-status">حالة الطلب: لم يتم الإرسال</span>
+              <h2>اكتملت مراجعة بياناتك</h2>
+              <p>
+                بياناتك جاهزة للمراجعة، لكنها لم تُرسل بعد. هذا النموذج غير متصل حاليًا بخادم،
+                لذلك تبقى المعلومات ضمن هذه الصفحة ولا يتم تقديم طلب أو إنشاء رقم مرجعي.
+              </p>
+            </div>
+
+            <dl class="confirmation-details">
+              <div>
+                <dt>حالة الإرسال</dt>
+                <dd>غير مرسل</dd>
+              </div>
+              <div>
+                <dt>رقم الطلب المرجعي</dt>
+                <dd>يظهر بعد تفعيل الإرسال</dd>
+              </div>
+              <div>
+                <dt>البريد المسجل</dt>
+                <dd dir="ltr">{{ personalControls['email'].value }}</dd>
+              </div>
+              <div>
+                <dt>الخطوة التالية</dt>
+                <dd>ربط نموذج التسجيل بخادم آمن</dd>
+              </div>
+            </dl>
+
+            <div class="confirmation-next">
+              <h3>ما الذي يمكنك فعله الآن؟</h3>
+              <ol>
+                <li>ارجع إلى المراجعة لتعديل بياناتك أو التأكد منها.</li>
+                <li>لن تتم مراجعة المستندات أو إرسال إشعار بالبريد قبل تفعيل الإرسال.</li>
+                <li>بعد ربط الخدمة، يمكن تقديم الطلب ومتابعة حالة المراجعة من المنصة.</li>
+              </ol>
+            </div>
+
+            <div class="confirmation-actions">
+              <button type="button" class="secondary-button" (click)="editStep(10)">
+                العودة إلى مراجعة البيانات
+              </button>
+              <a class="confirmation-link" routerLink="/">العودة إلى الصفحة الرئيسية</a>
+              <a class="confirmation-link confirmation-link-primary" routerLink="/specialists">
+                استكشاف المتخصصين
+              </a>
+            </div>
+          </div>
+        </section>
+      } @else {
+        <div class="coming-soon">
+          <h2>الخطوة {{ currentStep }} من {{ steps.length }}</h2>
+          <p>سيتم إكمال هذا الجزء قريبًا.</p>
+        </div>
+      }
+    </section>
+  </main>
+</div>

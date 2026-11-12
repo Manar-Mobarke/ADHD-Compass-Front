@@ -1,0 +1,277 @@
+:host {
+  display: block;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.account-registration-page {
+  min-height: calc(100vh - 80px);
+  background: #f5f7fa;
+  color: #1e293b;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.change-type-link {
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #142a55;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.account-main {
+  width: min(690px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 38px 0 52px;
+}
+
+.account-card {
+  padding: 36px;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgb(20 42 85 / 4%);
+}
+
+.account-heading {
+  margin-bottom: 28px;
+}
+
+.account-heading h1 {
+  margin: 0;
+  color: #142a55;
+  font-size: clamp(1.5rem, 3vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.account-heading p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.form-section {
+  display: grid;
+  gap: 18px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-field {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.form-field label,
+.form-section legend {
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.form-field label span,
+.form-section legend span {
+  color: #d47644;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px solid #d6dde6;
+  border-radius: 11px;
+  background: #fff;
+  color: #1e293b;
+  font: inherit;
+  font-size: 0.87rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.form-field input::placeholder {
+  color: #94a3b8;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #427780;
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(66 119 128 / 13%);
+}
+
+.section-divider {
+  margin: 26px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #64748b;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.section-divider::after {
+  height: 1px;
+  flex: 1;
+  background: #e2e8f0;
+  content: '';
+}
+
+.diagnosis-section {
+  margin-top: 24px;
+}
+
+.diagnosis-section fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.diagnosis-section legend {
+  margin-bottom: 12px;
+}
+
+.choice-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.diagnosis-choice {
+  min-height: 52px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+  color: #334155;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.diagnosis-choice:has(input:checked) {
+  border: 2px solid #427780;
+  color: #275e67;
+  font-weight: 700;
+}
+
+.diagnosis-choice input {
+  accent-color: #427780;
+}
+
+.security-section {
+  margin-top: 26px;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-left: 72px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  padding: 5px;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.72rem;
+}
+
+.password-toggle:hover {
+  color: #142a55;
+}
+
+.field-hint {
+  color: #427780;
+  font-size: 0.73rem;
+}
+
+.error-message {
+  color: #b42318;
+  font-size: 0.75rem;
+}
+
+.submit-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 11px;
+  background: #d47644;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: background-color 160ms ease;
+}
+
+.submit-button:hover {
+  background: #bf6333;
+}
+
+.submit-button:focus-visible,
+.password-toggle:focus-visible,
+.change-type-link:focus-visible,
+.change-type-link:focus-visible {
+  outline: 3px solid rgb(66 119 128 / 40%);
+  outline-offset: 3px;
+}
+
+.privacy-note,
+.submission-notice {
+  margin: 16px 0 0;
+  color: #64748b;
+  font-size: 0.76rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.submission-notice {
+  padding: 10px 12px;
+  border: 1px solid #f4d3bd;
+  border-radius: 9px;
+  background: #fff8f3;
+  color: #8a4b2c;
+}
+
+@media (max-width: 560px) {
+  .account-card {
+    padding: 26px 20px;
+  }
+
+  .field-row,
+  .choice-row {
+    grid-template-columns: 1fr;
+  }
+
+  .change-type-link {
+    font-size: 0.75rem;
+  }
+}
