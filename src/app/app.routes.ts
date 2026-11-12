@@ -3,6 +3,7 @@ import { Home } from './pages/home/home';
 import { SpecialistsDirectoryComponent } from './pages/specialists-directory/specialists-directory';
 import { RegistrationTypeSelectionComponent } from './pages/registration-type-selection/registration-type-selection';
 import { AccountRegistrationComponent } from './pages/account-registration/account-registration';
+import { SignInComponent } from './pages/sign-in/sign-in';
 import { SpecialistRegistrationComponent } from './pages/specialist-registration/specialist-registration';
 
 export const routes: Routes = [
@@ -17,6 +18,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegistrationTypeSelectionComponent
+  },
+  {
+    path: 'login',
+    component: SignInComponent
   },
   {
     path: 'self-register',

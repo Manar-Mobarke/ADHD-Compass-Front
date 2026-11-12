@@ -30,6 +30,7 @@ export class Navbar {
     ['/register', '/self-register', '/parent-register', '/specialist-register', '/login']
       .includes(this.currentPath())
   );
+  isLoginRoute = computed(() => this.currentPath() === '/login');
   isSpecialistRegistration = computed(() => this.currentPath() === '/specialist-register');
 
   /**
@@ -43,6 +44,7 @@ export class Navbar {
       recipientPortal: 'بوابة متلقي الخدمة والدعم',
       specialistPortal: 'بوابة انضمام المتخصصين',
       existingAccount: 'لديك حساب بالفعل؟',
+      noAccount: 'ليس لديك حساب؟',
       mainNavigation: 'التنقل الرئيسي',
       mobileNavigation: 'التنقل على الهاتف',
       home: 'الرئيسية',
@@ -61,6 +63,7 @@ export class Navbar {
       recipientPortal: 'Service recipient and support portal',
       specialistPortal: 'Specialist registration portal',
       existingAccount: 'Already have an account?',
+      noAccount: "Don't have an account?",
       mainNavigation: 'Main navigation',
       mobileNavigation: 'Mobile navigation',
       home: 'Home',
@@ -79,6 +82,7 @@ export class Navbar {
     recipientPortal: string;
     specialistPortal: string;
     existingAccount: string;
+    noAccount: string;
     mainNavigation: string;
     mobileNavigation: string;
     home: string;

@@ -42,6 +42,13 @@ describe('Navbar', () => {
     expect(fixture.nativeElement.querySelector('.auth-brand-copy small')?.textContent)
       .toContain('بوابة انضمام المتخصصين');
 
+    await router.navigateByUrl('/login');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.auth-login-link')?.getAttribute('href'))
+      .toBe('/register');
+    expect(fixture.nativeElement.querySelector('.auth-login-link')?.textContent)
+      .toContain('ليس لديك حساب؟');
+
     await router.navigateByUrl('/');
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.auth-header')).toBeNull();

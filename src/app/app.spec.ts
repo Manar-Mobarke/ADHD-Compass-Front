@@ -42,7 +42,7 @@ describe('App', () => {
     const router = TestBed.inject(Router);
     fixture.detectChanges();
 
-    for (const path of ['/register', '/self-register', '/parent-register', '/specialist-register']) {
+    for (const path of ['/register', '/self-register', '/parent-register', '/specialist-register', '/login']) {
       await router.navigateByUrl(path);
       await fixture.whenStable();
       fixture.detectChanges();

@@ -1,0 +1,71 @@
+<div class="account-registration-page" dir="rtl" lang="ar">
+  <main class="account-main">
+    <section class="account-card" aria-labelledby="sign-in-heading">
+      <a routerLink="/register" class="change-type-link">
+        إنشاء حساب جديد
+        <span aria-hidden="true">←</span>
+      </a>
+
+      <header class="account-heading">
+        <h1 id="sign-in-heading">تسجيل الدخول</h1>
+        <p>أهلًا بعودتك إلى ADHD Compass. سجّل الدخول إلى حسابك للمتابعة.</p>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <section class="form-section" aria-label="بيانات تسجيل الدخول">
+          <div class="form-field">
+            <label for="email">البريد الإلكتروني <span>*</span></label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="name@example.com"
+              autocomplete="email"
+              dir="ltr"
+            />
+            @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+              <small class="error-message">يرجى إدخال البريد الإلكتروني.</small>
+            } @else if (form.controls.email.touched && form.controls.email.hasError('email')) {
+              <small class="error-message">يرجى إدخال بريد إلكتروني صحيح.</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="password">كلمة المرور <span>*</span></label>
+            <div class="password-field">
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="أدخل كلمة المرور"
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="showPassword = !showPassword"
+                aria-label="تبديل إظهار كلمة المرور"
+              >
+                {{ showPassword ? 'إخفاء' : 'إظهار' }}
+              </button>
+            </div>
+            @if (form.controls.password.touched && form.controls.password.invalid) {
+              <small class="error-message">يرجى إدخال كلمة المرور.</small>
+            }
+          </div>
+        </section>
+
+        <button type="submit" class="submit-button">
+          تسجيل الدخول
+          <span aria-hidden="true">←</span>
+        </button>
+
+        @if (submitted) {
+          <p class="submission-notice" role="status">
+            تم التحقق من البيانات، لكن تسجيل الدخول غير متاح حاليًا لعدم اتصال الصفحة بخادم.
+          </p>
+        }
+      </form>
+    </section>
+  </main>
+</div>
