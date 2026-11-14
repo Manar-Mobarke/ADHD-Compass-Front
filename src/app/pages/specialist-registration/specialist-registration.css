@@ -1033,11 +1033,6 @@
   border: 1px solid #142a55;
 }
 
-.step-3-actions .primary-button:hover,
-.step-3-actions .secondary-button:hover {
-  transform: translateY(-1px);
-}
-
 .step-wizard-actions .primary-button {
   border: 1px solid #d47644;
   background: #d47644;
@@ -1141,8 +1136,7 @@
   transform: translateY(-1px);
 }
 
-.arrow-left,
-.arrow-right {
+.arrow-left {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1205,15 +1199,5 @@
     flex-direction: row;
     justify-content: flex-start;
     text-align: right;
-  }
-
-  .form-actions {
-    flex-direction: column-reverse;
-    gap: 16px;
-  }
-
-  .primary-button,
-  .secondary-button {
-    width: 100%;
   }
 }
