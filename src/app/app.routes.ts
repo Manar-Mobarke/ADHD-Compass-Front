@@ -1,10 +1,5 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
-import { SpecialistsDirectoryComponent } from './pages/specialists-directory/specialists-directory';
-import { RegistrationTypeSelectionComponent } from './pages/registration-type-selection/registration-type-selection';
-import { AccountRegistrationComponent } from './pages/account-registration/account-registration';
-import { SignInComponent } from './pages/sign-in/sign-in';
-import { SpecialistRegistrationComponent } from './pages/specialist-registration/specialist-registration';
 
 export const routes: Routes = [
   {
@@ -13,29 +8,45 @@ export const routes: Routes = [
   },
   {
     path: 'specialists',
-    component: SpecialistsDirectoryComponent
+    loadComponent: () =>
+      import('./pages/specialists-directory/specialists-directory').then(
+        (module) => module.SpecialistsDirectoryComponent
+      )
   },
   {
     path: 'register',
-    component: RegistrationTypeSelectionComponent
+    loadComponent: () =>
+      import('./pages/registration-type-selection/registration-type-selection').then(
+        (module) => module.RegistrationTypeSelectionComponent
+      )
   },
   {
     path: 'login',
-    component: SignInComponent
+    loadComponent: () =>
+      import('./pages/sign-in/sign-in').then((module) => module.SignInComponent)
   },
   {
     path: 'self-register',
-    component: AccountRegistrationComponent,
+    loadComponent: () =>
+      import('./pages/account-registration/account-registration').then(
+        (module) => module.AccountRegistrationComponent
+      ),
     data: { accountType: 'self' }
   },
   {
     path: 'parent-register',
-    component: AccountRegistrationComponent,
+    loadComponent: () =>
+      import('./pages/account-registration/account-registration').then(
+        (module) => module.AccountRegistrationComponent
+      ),
     data: { accountType: 'parent' }
   },
   {
     path: 'specialist-register',
-    component: SpecialistRegistrationComponent
+    loadComponent: () =>
+      import('./pages/specialist-registration/specialist-registration').then(
+        (module) => module.SpecialistRegistrationComponent
+      )
   },
   {
     path: '**',
