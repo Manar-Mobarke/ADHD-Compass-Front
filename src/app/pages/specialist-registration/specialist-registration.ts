@@ -22,6 +22,8 @@ export class SpecialistRegistrationComponent {
   selectedPhotoName = '';
   totalSteps = 10;
   submitted = false;
+  showPassword = false;
+  showPasswordConfirm = false;
   
   readonly steps = [
     'معلوماتك الشخصية',

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 type RegistrationType = 'self' | 'parent' | 'specialist';
@@ -11,9 +11,9 @@ type RegistrationType = 'self' | 'parent' | 'specialist';
   styleUrl: './registration-type-selection.css'
 })
 export class RegistrationTypeSelectionComponent {
-  selectedType: RegistrationType | null = null;
+  readonly selectedType = signal<RegistrationType | null>(null);
 
   selectType(type: RegistrationType): void {
-    this.selectedType = type;
+    this.selectedType.set(type);
   }
 }

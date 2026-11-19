@@ -14,6 +14,13 @@ export const routes: Routes = [
       )
   },
   {
+    path: 'specialist-dashboard',
+    loadComponent: () =>
+      import('./pages/specialist-dashboard/specialist-dashboard').then(
+        (module) => module.SpecialistDashboardComponent
+      )
+  },
+  {
     path: 'register',
     loadComponent: () =>
       import('./pages/registration-type-selection/registration-type-selection').then(

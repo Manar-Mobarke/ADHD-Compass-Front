@@ -13,8 +13,8 @@
           <button
             type="button"
             class="type-option"
-            [class.selected]="selectedType === 'self'"
-            [attr.aria-pressed]="selectedType === 'self'"
+            [class.selected]="selectedType() === 'self'"
+            [attr.aria-pressed]="selectedType() === 'self'"
             (click)="selectType('self')"
           >
             <span class="option-top">
@@ -33,8 +33,8 @@
           <button
             type="button"
             class="type-option"
-            [class.selected]="selectedType === 'parent'"
-            [attr.aria-pressed]="selectedType === 'parent'"
+            [class.selected]="selectedType() === 'parent'"
+            [attr.aria-pressed]="selectedType() === 'parent'"
             (click)="selectType('parent')"
           >
             <span class="option-top">
@@ -54,8 +54,8 @@
           <button
             type="button"
             class="type-option"
-            [class.selected]="selectedType === 'specialist'"
-            [attr.aria-pressed]="selectedType === 'specialist'"
+            [class.selected]="selectedType() === 'specialist'"
+            [attr.aria-pressed]="selectedType() === 'specialist'"
             (click)="selectType('specialist')"
           >
             <span class="option-top">
@@ -74,17 +74,17 @@
       </fieldset>
 
       <div class="selection-action" aria-live="polite">
-        @if (selectedType === 'specialist') {
+        @if (selectedType() === 'specialist') {
           <a routerLink="/specialist-register" class="continue-button">
             متابعة تسجيل المتخصصين
             <span aria-hidden="true">←</span>
           </a>
-        } @else if (selectedType === 'self') {
+        } @else if (selectedType() === 'self') {
           <a routerLink="/self-register" class="continue-button">
             متابعة تسجيل حسابي
             <span aria-hidden="true">←</span>
           </a>
-        } @else if (selectedType === 'parent') {
+        } @else if (selectedType() === 'parent') {
           <a routerLink="/parent-register" class="continue-button">
             متابعة تسجيل ولي الأمر
             <span aria-hidden="true">←</span>

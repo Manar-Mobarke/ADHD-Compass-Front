@@ -30,6 +30,7 @@ export class Navbar {
     ['/register', '/self-register', '/parent-register', '/specialist-register', '/login']
       .includes(this.currentPath())
   );
+  isSpecialistDashboard = computed(() => this.currentPath() === '/specialist-dashboard');
   isLoginRoute = computed(() => this.currentPath() === '/login');
   isSpecialistRegistration = computed(() => this.currentPath() === '/specialist-register');
 

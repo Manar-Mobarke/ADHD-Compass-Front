@@ -970,6 +970,27 @@
   box-shadow: none;
 }
 
+.password-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: #4d5b76;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: #142a55;
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid rgba(66, 119, 128, 0.6);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
 .photo-field {
   margin-top: 8px;
 }

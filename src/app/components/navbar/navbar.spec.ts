@@ -53,6 +53,10 @@ describe('Navbar', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.auth-header')).toBeNull();
     expect(fixture.nativeElement.querySelector('.nav-link')).not.toBeNull();
+
+    await router.navigateByUrl('/specialist-dashboard');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('header')).toBeNull();
   });
 
   it('should link the register action to registration type selection on desktop and mobile', async () => {

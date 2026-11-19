@@ -117,8 +117,14 @@
           <label for="password">كلمة المرور <span>*</span></label>
           <div class="input-shell">
             <span class="field-icon" aria-hidden="true">◌</span>
-            <input id="password" type="password" formControlName="password" placeholder="••••••••••••••"
-              autocomplete="new-password" />
+            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+              placeholder="••••••••••••••" autocomplete="new-password" />
+            <button type="button" class="password-toggle" (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'"
+              [attr.aria-pressed]="showPassword">
+              <span class="material-symbols-outlined" aria-hidden="true">{{ showPassword ? 'visibility_off' :
+                'visibility' }}</span>
+            </button>
           </div>
           @if (accountControls['password'].touched && accountControls['password'].invalid) {
           <small class="error-message">يجب أن تكون كلمة المرور 8 أحرف على الأقل.</small>
@@ -129,8 +135,14 @@
           <label for="confirmPassword">تأكيد كلمة المرور <span>*</span></label>
           <div class="input-shell">
             <span class="field-icon" aria-hidden="true">◌</span>
-            <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••••••••"
-              autocomplete="new-password" />
+            <input id="confirmPassword" [type]="showPasswordConfirm ? 'text' : 'password'"
+              formControlName="confirmPassword" placeholder="••••••••••••••" autocomplete="new-password" />
+            <button type="button" class="password-toggle" (click)="showPasswordConfirm = !showPasswordConfirm"
+              [attr.aria-label]="showPasswordConfirm ? 'إخفاء تأكيد كلمة المرور' : 'إظهار تأكيد كلمة المرور'"
+              [attr.aria-pressed]="showPasswordConfirm">
+              <span class="material-symbols-outlined" aria-hidden="true">{{ showPasswordConfirm ? 'visibility_off' :
+                'visibility' }}</span>
+            </button>
           </div>
           @if (
           accountControls['confirmPassword'].touched &&

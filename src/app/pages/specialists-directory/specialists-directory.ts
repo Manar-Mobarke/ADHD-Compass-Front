@@ -2,17 +2,26 @@
 import { Component, computed, signal } from '@angular/core';
 import { Footer } from '../../components/footer/footer';
 
+type SpecialistCategory = 'adults' | 'children' | 'family';
+type PriceFilter = 'all' | '300' | '350' | '400';
+type DialogMode = 'profile' | 'booking';
+
 interface Specialist {
   id: number;
   name: string;
   title: string;
   initials: string;
   experience: number;
-  category: string;
+  category: SpecialistCategory;
   specialty: string;
   description: string;
   price: number;
   duration: number;
+}
+
+interface CategoryOption {
+  value: 'all' | SpecialistCategory;
+  label: string;
 }
 
 @Component({
@@ -23,18 +32,20 @@ interface Specialist {
   styleUrl: './specialists-directory.css'
 })
 export class SpecialistsDirectoryComponent {
-  searchTerm = signal('');
-  selectedCategory = signal('all');
-  selectedPrice = signal('all');
+  readonly searchTerm = signal('');
+  readonly selectedCategory = signal<CategoryOption['value']>('all');
+  readonly selectedPrice = signal<PriceFilter>('all');
+  readonly selectedSpecialist = signal<Specialist | null>(null);
+  readonly dialogMode = signal<DialogMode | null>(null);
 
-  categories = [
+  readonly categories: readonly CategoryOption[] = [
     { value: 'all', label: 'كل الفئات' },
     { value: 'adults', label: 'البالغين' },
     { value: 'children', label: 'الأطفال والأهالي' },
     { value: 'family', label: 'الإرشاد الأسري' }
   ];
 
-  specialists: Specialist[] = [
+  readonly specialists: readonly Specialist[] = [
     {
       id: 1,
       name: 'أ. سارة هاشم',
@@ -109,22 +120,24 @@ export class SpecialistsDirectoryComponent {
     }
   ];
 
-  filteredSpecialists = computed(() => {
+  readonly filteredSpecialists = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
     const category = this.selectedCategory();
     const price = this.selectedPrice();
 
-    return this.specialists.filter(specialist => {
-      const matchesSearch =
-        specialist.name.toLowerCase().includes(term) ||
-        specialist.title.toLowerCase().includes(term) ||
-        specialist.specialty.toLowerCase().includes(term);
+    return this.specialists.filter((specialist) => {
+      const matchesSearch = term === '' || [
+        specialist.name,
+        specialist.title,
+        specialist.specialty,
+        specialist.description
+      ].some((text) => text.toLowerCase().includes(term));
 
       const matchesCategory =
         category === 'all' || specialist.category === category;
 
       const matchesPrice =
-        price === 'all' || specialist.price <= Number(price);
+        price === 'all' || specialist.price <= Number.parseInt(price, 10);
 
       return matchesSearch && matchesCategory && matchesPrice;
     });
@@ -135,4 +148,24 @@ export class SpecialistsDirectoryComponent {
     this.selectedCategory.set('all');
     this.selectedPrice.set('all');
   }
+
+  categoryLabel(category: string): string {
+    return this.categories.find((item) => item.value === category)?.label ?? category;
+  }
+
+  openProfile(specialist: Specialist): void {
+    this.selectedSpecialist.set(specialist);
+    this.dialogMode.set('profile');
+  }
+
+  openBooking(specialist: Specialist): void {
+    this.selectedSpecialist.set(specialist);
+    this.dialogMode.set('booking');
+  }
+
+  closeDialog(): void {
+    this.dialogMode.set(null);
+    this.selectedSpecialist.set(null);
+  }
 }
+

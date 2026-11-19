@@ -1,0 +1,652 @@
+<div class="screen-shell" dir="rtl" lang="ar">
+  <!-- Main Content Area -->
+  <main id="calendar" class="calendar-main">
+    
+    <!-- Profile Completion Alert Banner (Criterion 7) -->
+    @if (!profileStatus().isComplete) {
+      <div class="profile-alert-banner" role="alert">
+        <div class="alert-content">
+          <span class="material-symbols-outlined alert-icon" aria-hidden="true">warning</span>
+          <div class="alert-text">
+            <strong>تنبيه: ملفك المهني غير مكتمل ({{ profileStatus().completionPercentage }}%)</strong>
+            <p>يرجى استكمال باقي خطوات التسجيل ورفع الشهادات لتفعيل الحجز المباشر لجميع المرضى على المنصة.</p>
+          </div>
+        </div>
+        <div class="alert-actions">
+          <button type="button" class="complete-profile-btn" (click)="navigateToIncompleteStep(7)">
+            استكمال البيانات
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          </button>
+          <button type="button" class="dismiss-alert-btn" (click)="toggleProfileCompletion()" title="محاكاة اكتمال الملف">
+            <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+            تفعيل مؤقت
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Dashboard Top Header -->
+    <header class="calendar-header">
+      <div class="calendar-title">
+        <h1>التقويم والمواعيد</h1>
+        <p>إدارة المواعيد الأسبوعية والجدول الزمني</p>
+      </div>
+
+      <div class="calendar-actions">
+        <button class="manage-schedule-action-btn" type="button" (click)="openManageDialog()">
+          <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+          إدارة فترات العمل
+        </button>
+        <button class="add-appointment-button" type="button" (click)="openAddAppointment()">
+          <span class="material-symbols-outlined" aria-hidden="true">add</span>
+          إضافة موعد
+        </button>
+      </div>
+    </header>
+
+    <!-- Toolbar Row: View toggle, Date navigation, Counters/Legend -->
+    <section class="calendar-toolbar" aria-label="خيارات التقويم">
+      <!-- Right: View switch -->
+      <div class="view-switch" aria-label="طريقة عرض التقويم">
+        <button type="button" [class.selected]="viewMode() === 'weekly'" (click)="viewMode.set('weekly')">أسبوع</button>
+        <button type="button" [class.selected]="viewMode() === 'daily'" (click)="viewMode.set('daily')">يوم</button>
+      </div>
+
+      <!-- Center: Week navigation -->
+      <div class="week-controls">
+        <button type="button" class="nav-arrow-btn" aria-label="الأسبوع السابق" (click)="changeWeek(-1)">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+        </button>
+        <strong class="week-range-text">{{ weekRange() }}</strong>
+        <button type="button" class="nav-arrow-btn" aria-label="الأسبوع التالي" (click)="changeWeek(1)">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+        </button>
+        <button type="button" class="today-btn" (click)="goToToday()">اليوم</button>
+      </div>
+
+      <!-- Left: Status Counters & Legend -->
+      <div class="calendar-legend">
+        <span class="legend-badge legend-available">
+          <i class="dot"></i>
+          متاح ({{ weeklyCounters().available }})
+        </span>
+        <span class="legend-badge legend-booked">
+          <i class="dot"></i>
+          محجوز ({{ weeklyCounters().booked }})
+        </span>
+        <span class="legend-badge legend-completed">
+          <i class="dot"></i>
+          مكتمل ({{ weeklyCounters().completed }})
+        </span>
+        @if (weeklyCounters().cancelled > 0) {
+          <span class="legend-badge legend-cancelled">
+            <i class="dot"></i>
+            ملغي ({{ weeklyCounters().cancelled }})
+          </span>
+        }
+      </div>
+    </section>
+
+    <!-- Calendar Grid (Weekly or Daily View) -->
+    <section class="calendar-grid" [class.daily-view]="viewMode() === 'daily'" aria-label="جدول المواعيد الأسبوعي">
+      @for (day of visibleCalendarDays(); track day.key) {
+        <div
+          class="calendar-day"
+          [class.calendar-day-active]="day.active"
+          (click)="selectCalendarDay(day.key)"
+        >
+          <!-- Day Header -->
+          <div class="calendar-day-heading">
+            <span class="day-label">{{ day.label }}</span>
+            <strong class="day-number" [class.active-date]="day.isToday || day.active">{{ day.date }}</strong>
+            <span class="day-slot-count">
+              @if (day.appointments.length > 0) {
+                {{ day.appointments.length }} مواعيد
+              } @else {
+                لا توجد مواعيد
+              }
+            </span>
+          </div>
+
+          <!-- Appointments List in this Day -->
+          <div class="calendar-day-slots">
+            @for (apt of day.appointments; track apt.id) {
+              <div
+                class="appointment-card"
+                [ngClass]="getStatusClass(apt.status)"
+                (click)="$event.stopPropagation(); openEditAppointment(apt)"
+                [attr.title]="'انقر لتعديل موعد ' + apt.patientName"
+              >
+                <div class="card-top-row">
+                  <span class="patient-name">{{ apt.patientName }}</span>
+                  <span class="card-status-pill">{{ getStatusLabel(apt.status) }}</span>
+                </div>
+
+                <div class="card-time-row">
+                  <span class="material-symbols-outlined time-icon" aria-hidden="true">schedule</span>
+                  <span class="time-range">{{ formatTime(apt.startTime) }} - {{ formatTime(apt.endTime) }}</span>
+                </div>
+
+                <div class="card-meta-row">
+                  <span class="session-type-badge">
+                    <span class="material-symbols-outlined" aria-hidden="true">
+                      {{ apt.sessionType === 'online' ? 'videocam' : 'location_on' }}
+                    </span>
+                    {{ apt.sessionType === 'online' ? 'أونلاين' : 'حضوري' }}
+                  </span>
+                  @if (apt.patientPhone) {
+                    <span class="patient-phone">{{ apt.patientPhone }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Quick Add Appointment Button for this Day -->
+            <button
+              type="button"
+              class="quick-add-slot-btn"
+              (click)="$event.stopPropagation(); openAddAppointment(day.key, day.fullDateStr)"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              <span>حجز موعد جديد</span>
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- Bottom Secondary CTA -->
+    <div class="calendar-bottom-actions">
+      <button class="manage-schedule-button" type="button" (click)="openManageDialog()">
+        <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+        إدارة فترات العمل الأسبوعية
+      </button>
+    </div>
+  </main>
+
+  <!-- Right Sidebar (RTL) matching Reference Screenshot -->
+  <aside class="dashboard-sidebar" aria-label="القائمة الجانبية">
+    <div>
+      <!-- Brand Logo -->
+      <a class="dashboard-brand" routerLink="/" aria-label="ADHD Compass - الصفحة الرئيسية">
+        <span class="brand-mark material-symbols-outlined" aria-hidden="true">spa</span>
+        <div class="brand-text">
+          <strong>ADHD Compass</strong>
+          <small>رفيقك نحو رعاية صحية أفضل</small>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="dashboard-nav" aria-label="التنقل الرئيسي">
+        <a class="current" href="#calendar" aria-current="page">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+          التقويم والمواعيد
+        </a>
+        <a href="#profile" (click)="$event.preventDefault(); navigateToIncompleteStep(1)">
+          <span class="material-symbols-outlined" aria-hidden="true">person</span>
+          الملف الشخصي
+        </a>
+        <a href="#messages" (click)="$event.preventDefault()">
+          <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+          الرسائل
+        </a>
+        <a href="#settings" (click)="$event.preventDefault()">
+          <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+          الإعدادات
+        </a>
+      </nav>
+    </div>
+
+    <!-- Bottom Specialist Profile Box -->
+    <div class="sidebar-profile">
+      <div class="profile-avatar">س.أ</div>
+      <div class="profile-info">
+        <strong>{{ profileStatus().specialistName }}</strong>
+        <small>{{ profileStatus().specialistTitle }}</small>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- ========================================== -->
+<!-- MODALS & DIALOGS -->
+<!-- ========================================== -->
+
+@if (dialogView(); as activeDialog) {
+  <div class="modal-backdrop" (click)="closeDialog()">
+    <section
+      class="schedule-dialog"
+      [class.wide-dialog]="activeDialog === 'manage'"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- ======================================== -->
+      <!-- MODAL 3: Manage Weekly Working Periods -->
+      <!-- ======================================== -->
+      @if (activeDialog === 'manage') {
+        <header class="dialog-header manage-header">
+          <div class="manage-header-title">
+            <span class="dialog-title-icon material-symbols-outlined" aria-hidden="true">schedule</span>
+            <h2>إدارة فترات العمل الأسبوعية</h2>
+          </div>
+          <div class="manage-actions">
+            <button type="button" class="new-period-button" (click)="openAddPeriod()">
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              إضافة فترة جديدة
+            </button>
+            <button type="button" class="dialog-close-icon" aria-label="إغلاق" (click)="closeDialog()">
+              <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="dialog-content manage-content">
+          <!-- Copy schedule banner / toolbar -->
+          <div class="copy-schedule-banner">
+            <div class="banner-info">
+              <span class="material-symbols-outlined" aria-hidden="true">event_repeat</span>
+              <div>
+                <strong>تطبيق الجدول تلقائياً على جميع الأسابيع القادمة</strong>
+                <p>يمكنك نسخ وتطبيق هذا التوزيع تلقائياً للأسبوع القادم بدون إعادة إدخالها يدوياً.</p>
+              </div>
+            </div>
+            <button type="button" class="copy-btn" (click)="openApplyScheduleDialog()">
+              <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+              نسخ الجدول للأسبوع القادم
+            </button>
+          </div>
+
+          <div class="schedule-info">
+            <span class="material-symbols-outlined" aria-hidden="true">info</span>
+            <p>الجدول يتكرر أسبوعياً ويتيح للمرضى حجز الجلسات وفق هذه الفترات المعلنة.</p>
+            <strong>إجمالي فترات العمل: {{ totalPeriods() }}</strong>
+          </div>
+
+          @if (updateNotice()) {
+            <p class="update-notice" role="status">{{ updateNotice() }}</p>
+          }
+          @if (formError()) {
+            <p class="form-error-banner" role="alert">{{ formError() }}</p>
+          }
+
+          <!-- Daily Breakdown List -->
+          <div class="work-day-list">
+            @for (day of workDays(); track day.key) {
+              <section class="work-day">
+                <header class="work-day-header">
+                  <div class="work-day-name">
+                    <span class="day-dot" [class.day-dot-active]="isDayActive(day)"></span>
+                    <h3>{{ day.label }}</h3>
+                    @if (isDayActive(day)) {
+                      <span class="day-active-badge">يوم عمل</span>
+                      <small class="day-hours-summary">{{ calculateDayTotalHours(day) }}</small>
+                    } @else {
+                      <span class="day-inactive-badge">يوم عطلة</span>
+                    }
+                  </div>
+                  <button type="button" class="add-another-button" (click)="openAddPeriod(day.key)">
+                    <span class="material-symbols-outlined" aria-hidden="true">add_circle</span>
+                    إضافة فترة
+                  </button>
+                </header>
+
+                @if (day.periods.length === 0) {
+                  <p class="empty-day-note">لم يتم تعيين فترات عمل لهذا اليوم.</p>
+                }
+
+                @for (period of day.periods; track period.id) {
+                  <div class="period-row">
+                    <div class="period-time">
+                      <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+                      <strong>{{ formatTimeEn(period.startTime) }} - {{ formatTimeEn(period.endTime) }}</strong>
+                      <span class="duration-tag">{{ calculateDurationHours(period.startTime, period.endTime) }}</span>
+                    </div>
+
+                    <span class="period-status" [class.period-status-closed]="period.status === 'closed'">
+                      <i></i>{{ periodStatusLabel(period) }}
+                    </span>
+
+                    <div class="period-actions">
+                      <button type="button" aria-label="تعديل الفترة" title="تعديل الفترة" (click)="openEditPeriod(day.key, period)">
+                        <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="حذف الفترة"
+                        title="حذف الفترة"
+                        (click)="deletePeriod(day.key, period)"
+                      >
+                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                      </button>
+                    </div>
+                  </div>
+                }
+              </section>
+            }
+          </div>
+        </div>
+
+        <footer class="dialog-footer manage-footer">
+          <button type="button" class="secondary-button" (click)="closeDialog()">إغلاق</button>
+        </footer>
+      }
+
+      <!-- ======================================== -->
+      <!-- MODAL 2: Add / Edit Working Period -->
+      <!-- ======================================== -->
+      @else if (activeDialog === 'add-period') {
+        <header class="dialog-header add-header">
+          <div class="add-heading">
+            <span class="dialog-title-icon material-symbols-outlined" aria-hidden="true">schedule</span>
+            <div>
+              <h2>{{ editingPeriodId() === null ? 'إضافة فترة عمل جديدة' : 'تعديل فترة العمل' }}</h2>
+              <p>حدد اليوم وأوقات العمل لإتاحة حجز المواعيد للمرضى</p>
+            </div>
+          </div>
+          <button type="button" class="dialog-close-icon" aria-label="العودة" (click)="openManageDialog()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </header>
+
+        <form class="dialog-content add-content" (submit)="savePeriod($event)">
+          <!-- Day selector pills -->
+          <div class="form-field">
+            <div class="field-heading">
+              <label>اختر اليوم <span>*</span></label>
+              <small>اختر يوماً من أيام الأسبوع</small>
+            </div>
+            <div class="day-selector">
+              @for (day of dayOptions; track day.key) {
+                <button
+                  type="button"
+                  class="day-option"
+                  [class.day-option-selected]="selectedDay() === day.key"
+                  (click)="selectDayOption(day)"
+                >
+                  <span>{{ day.label }}</span>
+                </button>
+              }
+            </div>
+            <div class="day-selection-summary">
+              <span>
+                <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                اليوم المحدد: {{ selectedDayLabel() }}
+              </span>
+              <small>التوقيت بتوقيت القاهرة (GMT+2)</small>
+            </div>
+          </div>
+
+          <!-- Time Inputs -->
+          <div class="time-fields">
+            <label class="form-field">
+              <span class="field-label">وقت البدء <i>*</i></span>
+              <span class="time-input-wrap">
+                <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+                <input type="time" [value]="startTime()" (input)="onStartTimeInput($event)" required />
+              </span>
+              <small>بداية استقبال الحجوزات</small>
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">وقت الانتهاء <i>*</i></span>
+              <span class="time-input-wrap">
+                <span class="material-symbols-outlined" aria-hidden="true">update</span>
+                <input type="time" [value]="endTime()" (input)="onEndTimeInput($event)" required />
+              </span>
+              <small>إجمالي الفترة: {{ durationLabel() }}</small>
+            </label>
+          </div>
+
+          @if (formError()) {
+            <p class="form-error" role="alert">{{ formError() }}</p>
+          }
+
+          <!-- Informational Notice Box -->
+          <div class="schedule-note">
+            <span class="material-symbols-outlined" aria-hidden="true">info</span>
+            <p>ملاحظة: الفترات المضافة هنا تتيح للمرضى حجز جلسات خلالها. تأكد من عدم تعارض الأوقات مع فترات عمل سابقة.</p>
+          </div>
+
+          <footer class="dialog-footer add-footer">
+            <button type="button" class="secondary-button" (click)="openManageDialog()">إلغاء</button>
+            <button type="submit" class="primary-button">
+              <span class="material-symbols-outlined" aria-hidden="true">check</span>
+              {{ editingPeriodId() === null ? 'إضافة فترة العمل' : 'حفظ التعديلات' }}
+            </button>
+          </footer>
+        </form>
+      }
+
+      <!-- ======================================== -->
+      <!-- MODAL 4: Apply Schedule to Next Week -->
+      <!-- ======================================== -->
+      @else if (activeDialog === 'apply-schedule') {
+        <header class="dialog-header apply-header">
+          <div class="apply-heading">
+            <span class="dialog-title-icon material-symbols-outlined" aria-hidden="true">event_repeat</span>
+            <div>
+              <h2>تطبيق الجدول على الأسبوع القادم</h2>
+              <p>تأكيد تكرار نفس جدول فترات العمل</p>
+            </div>
+          </div>
+          <button type="button" class="dialog-close-icon" aria-label="إغلاق" (click)="closeDialog()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </header>
+
+        <div class="dialog-content apply-content">
+          <div class="apply-info-card">
+            <span class="material-symbols-outlined info-large-icon" aria-hidden="true">calendar_today</span>
+            <div class="apply-info-text">
+              <p>سيتم نسخ جميع فترات العمل الحالية وتطبيقها على الأسبوع القادم من تاريخ:</p>
+              <strong class="target-week-badge">{{ nextWeekRange() }}</strong>
+            </div>
+          </div>
+
+          <p class="apply-warning-text">
+            ملاحظة: لن يؤثر هذا الإجراء على المواعيد المحجوزة مسبقاً، بل سيتيح فترات الحجز الجديدة وفق هذا النمط.
+          </p>
+
+          <footer class="dialog-footer apply-footer">
+            <button type="button" class="secondary-button" (click)="openManageDialog()">إلغاء</button>
+            <button type="button" class="primary-button" (click)="confirmApplySchedule()">
+              <span class="material-symbols-outlined" aria-hidden="true">check</span>
+              تأكيد التطبيق
+            </button>
+          </footer>
+        </div>
+      }
+
+      <!-- ======================================== -->
+      <!-- MODAL 5: Appointment Create / Edit -->
+      <!-- ======================================== -->
+      @else if (activeDialog === 'appointment') {
+        <header class="dialog-header appointment-header">
+          <div class="appointment-heading">
+            <span class="dialog-title-icon material-symbols-outlined" aria-hidden="true">calendar_today</span>
+            <div>
+              <h2>{{ editingAppointmentId() === null ? 'إضافة موعد جديد' : 'تعديل بيانات الموعد' }}</h2>
+              <p>تسجيل موعد مريض أو تحديد فترة متاحة للحجز</p>
+            </div>
+          </div>
+          <button type="button" class="dialog-close-icon" aria-label="إغلاق" (click)="closeDialog()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </header>
+
+        <form class="dialog-content appointment-content" (submit)="saveAppointment($event)">
+          <!-- Patient Name -->
+          <div class="form-field">
+            <label class="field-label">اسم المريض أو وصف الموعد <i>*</i></label>
+            <input
+              type="text"
+              class="text-input"
+              [value]="appointmentPatientName()"
+              (input)="appointmentPatientName.set($any($event.target).value)"
+              placeholder="مثال: أحمد محمد أو فترة استشارة"
+              required
+            />
+          </div>
+
+          <!-- Patient Phone -->
+          <div class="form-field">
+            <label class="field-label">رقم الهاتف</label>
+            <input
+              type="tel"
+              class="text-input"
+              [value]="appointmentPatientPhone()"
+              (input)="appointmentPatientPhone.set($any($event.target).value)"
+              placeholder="010XXXXXXXX"
+            />
+          </div>
+
+          <!-- Day & Time Row -->
+          <div class="time-fields">
+            <div class="form-field">
+              <label class="field-label">اليوم <i>*</i></label>
+              <select
+                class="select-input"
+                [value]="appointmentDayKey()"
+                (change)="appointmentDayKey.set($any($event.target).value)"
+              >
+                @for (opt of dayOptions; track opt.key) {
+                  <option [value]="opt.key">{{ opt.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label class="field-label">نوع الجلسة <i>*</i></label>
+              <select
+                class="select-input"
+                [value]="appointmentSessionType()"
+                (change)="appointmentSessionType.set($any($event.target).value)"
+              >
+                <option value="online">جلسة أونلاين</option>
+                <option value="in_person">جلسة حضورية</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Start and End Time -->
+          <div class="time-fields">
+            <label class="form-field">
+              <span class="field-label">وقت البدء <i>*</i></span>
+              <span class="time-input-wrap">
+                <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+                <input
+                  type="time"
+                  [value]="appointmentStartTime()"
+                  (input)="appointmentStartTime.set($any($event.target).value)"
+                  required
+                />
+              </span>
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">وقت الانتهاء <i>*</i></span>
+              <span class="time-input-wrap">
+                <span class="material-symbols-outlined" aria-hidden="true">update</span>
+                <input
+                  type="time"
+                  [value]="appointmentEndTime()"
+                  (input)="appointmentEndTime.set($any($event.target).value)"
+                  required
+                />
+              </span>
+            </label>
+          </div>
+
+          <!-- Status Selector -->
+          <div class="form-field">
+            <label class="field-label">حالة الموعد <i>*</i></label>
+            <div class="status-radio-group">
+              <label class="status-radio-label" [class.selected]="appointmentStatus() === 'booked'">
+                <input
+                  type="radio"
+                  name="aptStatus"
+                  value="booked"
+                  [checked]="appointmentStatus() === 'booked'"
+                  (change)="appointmentStatus.set('booked')"
+                />
+                محجوز
+              </label>
+
+              <label class="status-radio-label" [class.selected]="appointmentStatus() === 'available'">
+                <input
+                  type="radio"
+                  name="aptStatus"
+                  value="available"
+                  [checked]="appointmentStatus() === 'available'"
+                  (change)="appointmentStatus.set('available')"
+                />
+                متاح للحجز
+              </label>
+
+              <label class="status-radio-label" [class.selected]="appointmentStatus() === 'completed'">
+                <input
+                  type="radio"
+                  name="aptStatus"
+                  value="completed"
+                  [checked]="appointmentStatus() === 'completed'"
+                  (change)="appointmentStatus.set('completed')"
+                />
+                مكتمل
+              </label>
+
+              <label class="status-radio-label" [class.selected]="appointmentStatus() === 'cancelled'">
+                <input
+                  type="radio"
+                  name="aptStatus"
+                  value="cancelled"
+                  [checked]="appointmentStatus() === 'cancelled'"
+                  (change)="appointmentStatus.set('cancelled')"
+                />
+                ملغي
+              </label>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="form-field">
+            <label class="field-label">ملاحظات الجلسة</label>
+            <textarea
+              class="textarea-input"
+              rows="2"
+              [value]="appointmentNotes()"
+              (input)="appointmentNotes.set($any($event.target).value)"
+              placeholder="اكتب أي تفاصيل إضافية عن الجلسة..."
+            ></textarea>
+          </div>
+
+          @if (appointmentFormError()) {
+            <p class="form-error" role="alert">{{ appointmentFormError() }}</p>
+          }
+
+          <footer class="dialog-footer appointment-footer">
+            <div class="footer-left">
+              @if (editingAppointmentId() !== null) {
+                <button
+                  type="button"
+                  class="danger-button"
+                  (click)="deleteAppointment(editingAppointmentId()!)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                  حذف الموعد
+                </button>
+              }
+            </div>
+            <div class="footer-right">
+              <button type="button" class="secondary-button" (click)="closeDialog()">إلغاء</button>
+              <button type="submit" class="primary-button">
+                <span class="material-symbols-outlined" aria-hidden="true">save</span>
+                {{ editingAppointmentId() === null ? 'حفظ الموعد' : 'تحديث الموعد' }}
+              </button>
+            </div>
+          </footer>
+        </form>
+      }
+    </section>
+  </div>
+}

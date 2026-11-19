@@ -44,6 +44,32 @@ describe('SpecialistRegistrationComponent', () => {
     expect(component.personalForm.valid).toBe(true);
   });
 
+  it('should toggle visibility independently for both account password fields', () => {
+    component.currentStep = 2;
+    fixture.detectChanges();
+
+    const passwordInput = fixture.nativeElement.querySelector('#password') as HTMLInputElement;
+    const confirmPasswordInput = fixture.nativeElement.querySelector('#confirmPassword') as HTMLInputElement;
+    const visibilityButtons = fixture.nativeElement.querySelectorAll('.password-toggle') as NodeListOf<HTMLButtonElement>;
+
+    expect(passwordInput.type).toBe('password');
+    expect(confirmPasswordInput.type).toBe('password');
+    expect(visibilityButtons.length).toBe(2);
+
+    visibilityButtons[0].click();
+    fixture.detectChanges();
+
+    expect(passwordInput.type).toBe('text');
+    expect(confirmPasswordInput.type).toBe('password');
+    expect(visibilityButtons[0].getAttribute('aria-pressed')).toBe('true');
+
+    visibilityButtons[1].click();
+    fixture.detectChanges();
+
+    expect(passwordInput.type).toBe('text');
+    expect(confirmPasswordInput.type).toBe('text');
+  });
+
   it('should require professional details and at least one age group', () => {
     component.currentStep = 4;
     component.professionalForm.patchValue({

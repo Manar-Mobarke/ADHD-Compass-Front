@@ -1,3 +1,4 @@
+@if (!isSpecialistDashboard()) {
 @if (isAuthRoute()) {
   <header class="auth-header" [attr.dir]="direction()" [attr.lang]="currentLang()">
     <div class="auth-header-inner">
@@ -102,4 +103,5 @@
       }
     </div>
   </header>
+}
 }
